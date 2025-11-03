@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Arnés para perro",
+    "price": 12990,
+    "description": "Cómodo y ajustable.",
+    "image": "/placeholder/arnes.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Cama acolchada",
+    "price": 34990,
+    "description": "Descanso premium.",
+    "image": "/placeholder/cama.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Collar reflectante",
+    "price": 7990,
+    "description": "Seguridad nocturna.",
+    "image": "/placeholder/collar.jpg"
+  }
+]
