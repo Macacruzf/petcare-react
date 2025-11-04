@@ -1,9 +1,213 @@
+/* 🎨 Paleta oficial PetCare */
 :root {
-  --brand: #0b1958;
-  --brand-2: #00a0b2;
+  --color-primary: #4CAF50;    /* Verde principal */
+  --color-secondary: #FF9800;  /* Naranja */
+  --color-accent: #2196F3;     /* Azul */
+  --color-text: #333333;       /* Gris oscuro */
+  --color-bg: #F5F5F5;         /* Gris claro */
 }
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-a { text-decoration: none; }
-.brand-bg { background: var(--brand); }
-.brand-text { color: var(--brand); }
-.container-narrow { max-width: 960px; }
+
+/* 🔹 Estilos globales */
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Enlaces */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: #1769AA;
+}
+
+/* 🔹 Navbar */
+.navbar {
+  background-color: var(--color-primary) !important;
+}
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.nav-link.active {
+  font-weight: 600;
+  border-bottom: 2px solid #fff;
+}
+.nav-link:hover {
+  color: #FFEB3B !important;
+}
+.btn-outline-light:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: white;
+}
+
+/* 🔹 Botones */
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-primary:hover {
+  background-color: #43A047;
+  border-color: #43A047;
+}
+.btn-outline-primary {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.btn-outline-primary:hover {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+/* 🔹 Tarjetas (productos, blog, etc.) */
+.card {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.25);
+}
+.card-title {
+  color: var(--color-primary);
+}
+
+/* 🔹 Imágenes dentro de las tarjetas (✅ Opción A: mostrar imágenes completas) */
+.card-img-top {
+  display: block;
+  width: 100%;
+  height: 280px !important; /* altura uniforme */
+  object-fit: contain !important; /* muestra toda la imagen sin recortarla */
+  object-position: center !important;
+  background-color: #fff; /* fondo neutro */
+  padding: 10px; /* deja espacio interno */
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  transition: transform 0.3s ease;
+}
+.card:hover .card-img-top {
+  transform: scale(1.02); /* efecto leve al pasar el mouse */
+}
+
+/* 🔹 Contenido interno de las tarjetas */
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-text {
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+/* 🔹 Grilla de productos */
+.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3 {
+  gap: 1.5rem; /* Espacio uniforme entre tarjetas */
+}
+
+/* 🔹 Formularios */
+.form-control:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+}
+
+/* 🔹 Footer */
+footer {
+  background-color: #E9E9E9;
+  color: var(--color-text);
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+/* 🔹 Utilidades */
+.container-narrow {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.brand-bg {
+  background-color: var(--color-primary);
+}
+.brand-text {
+  color: var(--color-primary);
+}
+
+/* 🔹 Secciones con encabezado */
+.section-header img {
+  max-width: 120px;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+/* 🔹 Efectos visuales adicionales */
+.btn {
+  transition: all 0.2s ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* 🔹 Asegura que las columnas no se rompan */
+.row [class*="col"] {
+  display: flex;
+}
+
+/* 🔹 Cada tarjeta debe ocupar toda la altura disponible */
+.card.h-100 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 🌿 Detalle de producto (vista individual) */
+.product-detail {
+  background-color: var(--color-bg);
+  border-radius: 0.75rem;
+  padding: 2rem 1rem;
+}
+.product-detail h2 {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+.product-detail p {
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+.product-detail .btn-success {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  transition: all 0.3s ease;
+}
+.product-detail .btn-success:hover {
+  background-color: #43a047;
+  border-color: #43a047;
+  transform: scale(1.03);
+}
+
+/* 🔹 Responsive móvil */
+@media (max-width: 768px) {
+  .product-detail img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
+  .product-detail h2 {
+    font-size: 1.5rem;
+  }
+  .product-detail p {
+    font-size: 1rem;
+  }
+  .card-img-top {
+    height: 220px !important;
+  }
+}

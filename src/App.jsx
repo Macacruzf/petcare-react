@@ -1,3 +1,4 @@
+// src/App.jsx
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
@@ -18,7 +19,10 @@ import AdminRoutes from './pages/admin/AdminRoutes.jsx'
 export default function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
+      {/* 🔹 Barra de navegación superior */}
       <Navbar />
+
+      {/* 🔹 Contenido principal */}
       <main className="flex-fill py-4">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -35,6 +39,8 @@ export default function App() {
           <Route path="/admin/*" element={<AdminRoutes />} />
         </Routes>
       </main>
+
+      {/* 🔹 Pie de página */}
       <Footer />
     </div>
   )
