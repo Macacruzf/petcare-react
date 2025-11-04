@@ -7,11 +7,12 @@ export function useProducts() {
   useEffect(() => {
     async function load() {
       try {
-        const resp = await fetch('/products.json')
+        // RUTA CORREGIDA: Acceso directo a /products.json
+        const resp = await fetch('/products.json') 
         const data = await resp.json()
         setProducts(data)
       } catch (e) {
-        console.error(e)
+        console.error("Error al cargar productos:", e)
       } finally {
         setLoading(false)
       }
