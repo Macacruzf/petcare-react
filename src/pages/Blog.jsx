@@ -7,13 +7,13 @@ export default function Blog() {
       id: 'comiendo',
       title: 'Alimentación adecuada',
       excerpt: 'Consejos para una dieta equilibrada y saludable.',
-      image: '/placeholder/comida.jpg'
+      image: '/placeholder/comiendo.jpg'
     },
     {
       id: 'vacunas',
       title: 'Calendario de vacunas',
       excerpt: 'Protege a tu mascota con un plan de vacunación al día.',
-      image: '/placeholder/vacuna.jpg'
+      image: '/placeholder/perritovacu.jpg'
     }
   ]
 

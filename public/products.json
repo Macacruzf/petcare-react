@@ -3,22 +3,63 @@
     "id": 1,
     "name": "Arnés para perro",
     "price": 12990,
-    "description": "Cómodo y ajustable.",
-    
-    "image": "arnes.jpg" 
+    "description": "Arnés cómodo y ajustable con diseño clásico en blanco y negro. Incluye correa a juego.",
+    "image": "/placeholder/arnes.jpg"
   },
   {
     "id": 2,
-    "name": "Cama acolchada",
+    "name": "Cama acolchada para perro",
     "price": 34990,
-    "description": "Descanso premium.",
-    "image": "cama.jpg" 
+    "description": "Cama ultrasuave con textura tipo waffle. Ideal para el descanso de tu mascota.",
+    "image": "/placeholder/cama.jpg"
   },
   {
     "id": 3,
-    "name": "Collar reflectante",
-    "price": 7990,
-    "description": "Seguridad nocturna.",
-    "image": "collar.jpg" 
+    "name": "Rascador y torre para gatos",
+    "price": 65990,
+    "description": "Centro de juegos con varias plataformas, cueva y hamaca. Ideal para gatos activos.",
+    "image": "/placeholder/casagato.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Collar tropical para perro",
+    "price": 8990,
+    "description": "Collar resistente con estampado tropical. Cómodo, ajustable y con cierre de seguridad.",
+    "image": "/placeholder/collar.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Alimento para gato Pro Plan",
+    "price": 28990,
+    "description": "Nutrición completa para gatos adultos. Fórmula con pollo y prebióticos naturales.",
+    "image": "/placeholder/comidagato.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Correa retráctil automática",
+    "price": 10990,
+    "description": "Correa extensible para perros de hasta 20kg. Ligera, resistente y ergonómica.",
+    "image": "/placeholder/correa.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Juguetes dentales para perro (pack x4)",
+    "price": 9990,
+    "description": "Pack de juguetes de goma no tóxica con texturas para limpieza dental y diversión.",
+    "image": "/placeholder/juguete.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Plato doble elevado para mascota",
+    "price": 14990,
+    "description": "Plato doble de cerámica con base de madera. Diseño elegante y fácil de limpiar.",
+    "image": "/placeholder/plato.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Shampoo para perros con ceramidas",
+    "price": 8490,
+    "description": "Shampoo hipoalergénico con ceramidas para brillo y reparación del pelaje.",
+    "image": "/placeholder/shampo.jpg"
   }
 ]

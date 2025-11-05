@@ -16,7 +16,7 @@ export default function Nosotros() {
       {/* Imagen de fondo o ilustrativa */}
       <div className="text-center mb-4">
         <img
-          src="/placeholder/equipo.jpg"
+          src="/placeholder/Superioridad.jpg"
           alt="Equipo PetCare"
           className="img-fluid rounded shadow-sm"
           style={{ maxHeight: '300px', objectFit: 'cover' }}
