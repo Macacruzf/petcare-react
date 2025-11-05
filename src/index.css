@@ -1,4 +1,4 @@
-/* 🎨 Paleta oficial PetCare */
+/*  Paleta oficial PetCare */
 :root {
   --color-primary: #4CAF50;    /* Verde principal */
   --color-secondary: #FF9800;  /* Naranja */
@@ -7,7 +7,7 @@
   --color-bg: #F5F5F5;         /* Gris claro */
 }
 
-/* 🔹 Estilos globales */
+/*  Estilos globales */
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   background-color: var(--color-bg);
@@ -16,7 +16,7 @@ body {
   padding: 0;
 }
 
-/* 🔹 Enlaces */
+/*  Enlaces */
 a {
   color: var(--color-accent);
   text-decoration: none;
@@ -26,7 +26,7 @@ a:hover {
   color: #1769AA;
 }
 
-/* 🔹 Navbar */
+/*  Navbar */
 .navbar {
   background-color: var(--color-primary) !important;
 }
@@ -46,7 +46,7 @@ a:hover {
   color: white;
 }
 
-/* 🔹 Botones */
+/*  Botones */
 .btn-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
@@ -64,7 +64,7 @@ a:hover {
   color: white;
 }
 
-/* 🔹 Tarjetas (productos, blog, etc.) */
+/*  Tarjetas (productos, blog, etc.) */
 .card {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -82,7 +82,7 @@ a:hover {
   color: var(--color-primary);
 }
 
-/* 🔹 Imágenes dentro de las tarjetas (✅ Opción A: mostrar imágenes completas) */
+/*  Imágenes dentro de las tarjetas (✅ Opción A: mostrar imágenes completas) */
 .card-img-top {
   display: block;
   width: 100%;
@@ -99,7 +99,7 @@ a:hover {
   transform: scale(1.02); /* efecto leve al pasar el mouse */
 }
 
-/* 🔹 Contenido interno de las tarjetas */
+/*  Contenido interno de las tarjetas */
 .card-body {
   flex-grow: 1;
   display: flex;
@@ -111,18 +111,18 @@ a:hover {
   font-size: 0.95rem;
 }
 
-/* 🔹 Grilla de productos */
+/*  Grilla de productos */
 .row-cols-1.row-cols-sm-2.row-cols-md-3.g-3 {
   gap: 1.5rem; /* Espacio uniforme entre tarjetas */
 }
 
-/* 🔹 Formularios */
+/*  Formularios */
 .form-control:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
 }
 
-/* 🔹 Footer */
+/*  Footer */
 footer {
   background-color: #E9E9E9;
   color: var(--color-text);
@@ -130,7 +130,7 @@ footer {
   text-align: center;
 }
 
-/* 🔹 Utilidades */
+/*  Utilidades */
 .container-narrow {
   max-width: 960px;
   margin: 0 auto;
@@ -142,14 +142,14 @@ footer {
   color: var(--color-primary);
 }
 
-/* 🔹 Secciones con encabezado */
+/*  Secciones con encabezado */
 .section-header img {
   max-width: 120px;
   display: block;
   margin: 0 auto 1rem;
 }
 
-/* 🔹 Efectos visuales adicionales */
+/*  Efectos visuales adicionales */
 .btn {
   transition: all 0.2s ease;
 }
@@ -157,19 +157,19 @@ footer {
   transform: scale(0.97);
 }
 
-/* 🔹 Asegura que las columnas no se rompan */
+/* Asegura que las columnas no se rompan */
 .row [class*="col"] {
   display: flex;
 }
 
-/* 🔹 Cada tarjeta debe ocupar toda la altura disponible */
+/* Cada tarjeta debe ocupar toda la altura disponible */
 .card.h-100 {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* 🌿 Detalle de producto (vista individual) */
+/*  Detalle de producto (vista individual) */
 .product-detail {
   background-color: var(--color-bg);
   border-radius: 0.75rem;
