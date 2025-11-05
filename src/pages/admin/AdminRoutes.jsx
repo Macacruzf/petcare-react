@@ -1,18 +1,60 @@
-import { Routes, Route, NavLink } from 'react-router-dom'
+// src/pages/admin/AdminRoutes.jsx
+import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
 import AdminHome from './AdminHome.jsx'
 import AdminProductos from './AdminProductos.jsx'
 import AdminUsuarios from './AdminUsuarios.jsx'
 import FormProducto from './FormProducto.jsx'
 import FormUsuario from './FormUsuario.jsx'
 
-export default function AdminRoutes(){
+export default function AdminRoutes() {
+  const usuario = JSON.parse(localStorage.getItem('usuario'))
+
+  // 🔒 Verificación de acceso
+  if (!usuario) {
+    // No ha iniciado sesión
+    return <Navigate to="/login" />
+  }
+
+  if (usuario.rol !== 'admin') {
+    // Es cliente o usuario común
+    return <Navigate to="/" />
+  }
+
+  // ✅ Si es administrador, muestra las rutas internas
   return (
-    <div className="container">
+    <div className="container py-4">
+      {/* 🔹 Barra de navegación interna del panel */}
       <div className="d-flex gap-2 mb-3">
-        <NavLink className="btn btn-outline-secondary" to="">Inicio</NavLink>
-        <NavLink className="btn btn-outline-secondary" to="productos">Productos</NavLink>
-        <NavLink className="btn btn-outline-secondary" to="usuarios">Usuarios</NavLink>
+        <NavLink
+          end
+          to="/admin"
+          className={({ isActive }) =>
+            `btn ${isActive ? 'btn-primary' : 'btn-outline-secondary'}`
+          }
+        >
+          Inicio
+        </NavLink>
+
+        <NavLink
+          to="/admin/productos"
+          className={({ isActive }) =>
+            `btn ${isActive ? 'btn-primary' : 'btn-outline-secondary'}`
+          }
+        >
+          Productos
+        </NavLink>
+
+        <NavLink
+          to="/admin/usuarios"
+          className={({ isActive }) =>
+            `btn ${isActive ? 'btn-primary' : 'btn-outline-secondary'}`
+          }
+        >
+          Usuarios
+        </NavLink>
       </div>
+
+      {/* 🔹 Rutas internas del panel */}
       <Routes>
         <Route index element={<AdminHome />} />
         <Route path="productos" element={<AdminProductos />} />

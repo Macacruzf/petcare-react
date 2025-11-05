@@ -1,5 +1,6 @@
 // src/pages/Contacto.jsx
 import { useState } from 'react'
+import logo from '../assets/placeholder/logo.png' 
 
 export default function Contacto() {
   const [formData, setFormData] = useState({ nombre: '', correo: '', mensaje: '' })
@@ -13,12 +14,14 @@ export default function Contacto() {
   const handleSubmit = (e) => {
     e.preventDefault()
     const form = e.currentTarget
+
     if (!form.checkValidity()) {
       e.stopPropagation()
     } else {
       setSent(true)
       setFormData({ nombre: '', correo: '', mensaje: '' })
     }
+
     setValidated(true)
   }
 
@@ -27,27 +30,30 @@ export default function Contacto() {
       {/* 🔹 Logo de la tienda */}
       <div className="text-center mb-4">
         <img
-          src="/placeholder/logo.png"
+          src={logo}
           alt="PetCare Logo"
-          className="img-fluid"
+          className="img-fluid mb-2"
           style={{ maxWidth: '140px' }}
         />
-        <h2 className="mt-3">Contáctanos</h2>
+        <h2 className="fw-bold text-success">Contáctanos</h2>
+        <p className="text-muted">Estamos aquí para ayudarte con cualquier duda o solicitud 🐾</p>
       </div>
 
       {sent ? (
         <div className="alert alert-success text-center" role="alert">
-          ¡Gracias por tu mensaje! Te responderemos pronto.
+          ✅ ¡Gracias por tu mensaje! Te responderemos pronto.
         </div>
       ) : (
         <form
-          className={`card card-body shadow-sm needs-validation ${validated ? 'was-validated' : ''}`}
+          className={`card card-body shadow-sm border-0 needs-validation ${
+            validated ? 'was-validated' : ''
+          }`}
           noValidate
           onSubmit={handleSubmit}
         >
           <div className="row g-3">
             <div className="col-md-6">
-              <label className="form-label">Nombre</label>
+              <label className="form-label fw-semibold">Nombre</label>
               <input
                 name="nombre"
                 type="text"
@@ -60,7 +66,7 @@ export default function Contacto() {
             </div>
 
             <div className="col-md-6">
-              <label className="form-label">Correo</label>
+              <label className="form-label fw-semibold">Correo</label>
               <input
                 name="correo"
                 type="email"
@@ -73,7 +79,7 @@ export default function Contacto() {
             </div>
 
             <div className="col-12">
-              <label className="form-label">Mensaje</label>
+              <label className="form-label fw-semibold">Mensaje</label>
               <textarea
                 name="mensaje"
                 className="form-control"
@@ -86,8 +92,8 @@ export default function Contacto() {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary mt-3 align-self-start">
-            Enviar
+          <button type="submit" className="btn btn-success mt-3 align-self-start px-4">
+            Enviar mensaje
           </button>
         </form>
       )}

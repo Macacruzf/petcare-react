@@ -1,25 +1,86 @@
-import { Link } from 'react-router-dom'
-export default function AdminProductos(){
-  const demo = [{id:1, nombre:'Arnés', precio:12990}, {id:2, nombre:'Cama', precio:34990}]
+// src/pages/admin/AdminProductos.jsx
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { productos as dataInicial } from '../../data/data.js'
+
+export default function AdminProductos() {
+  const [productos, setProductos] = useState([])
+  const navigate = useNavigate()
+
+  // 🔹 Cargar productos desde localStorage o data.js
+  useEffect(() => {
+    const guardados = localStorage.getItem('productos')
+    if (guardados) {
+      setProductos(JSON.parse(guardados))
+    } else {
+      setProductos(dataInicial)
+      localStorage.setItem('productos', JSON.stringify(dataInicial))
+    }
+  }, [])
+
+  // 🔹 Eliminar producto
+  const eliminarProducto = (id) => {
+    if (confirm('¿Deseas eliminar este producto?')) {
+      const nuevos = productos.filter((p) => p.id !== id)
+      setProductos(nuevos)
+      localStorage.setItem('productos', JSON.stringify(nuevos))
+    }
+  }
+
   return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center mb-2">
-        <h3>Productos</h3>
-        <Link to="nuevo" className="btn btn-primary">Nuevo producto</Link>
+    <div className="container py-3">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h3 className="fw-bold">Productos</h3>
+        <Link to="nuevo" className="btn btn-primary">
+          <i className="fa-solid fa-plus me-1"></i> Nuevo producto
+        </Link>
       </div>
-      <div className="table-responsive">
-        <table className="table">
-          <thead><tr><th>ID</th><th>Nombre</th><th>Precio</th><th></th></tr></thead>
-          <tbody>
-            {demo.map(p => (
-              <tr key={p.id}>
-                <td>{p.id}</td><td>{p.nombre}</td><td>${p.precio.toLocaleString()}</td>
-                <td><Link to={String(p.id)} className="btn btn-sm btn-outline-secondary">Editar</Link></td>
+
+      {productos.length === 0 ? (
+        <p className="text-muted">No hay productos registrados.</p>
+      ) : (
+        <div className="table-responsive">
+          <table className="table align-middle table-striped">
+            <thead className="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoría</th>
+                <th>Oferta</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {productos.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.nombre}</td>
+                  <td>${p.precio.toLocaleString('es-CL')}</td>
+                  <td>{p.categoria}</td>
+                  <td>{p.oferta ? 'Sí' : 'No'}</td>
+                  <td className="text-end">
+                    <div className="btn-group">
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => eliminarProducto(p.id)}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-secondary"
+                        onClick={() => navigate(String(p.id))}
+                      >
+                        <i className="fa-solid fa-pen"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }

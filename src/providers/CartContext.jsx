@@ -6,7 +6,7 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]); // {id, name, price, qty}
 
-  // 🔹 Cargar carrito desde localStorage al iniciar
+  //  Cargar carrito desde localStorage al iniciar
   useEffect(() => {
     const stored = localStorage.getItem('cart');
     if (stored) {
@@ -18,12 +18,12 @@ export function CartProvider({ children }) {
     }
   }, []);
 
-  // 🔹 Guardar carrito en localStorage al cambiar
+  //  Guardar carrito en localStorage al cambiar
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  // 🔹 Agregar producto al carrito
+  //  Agregar producto al carrito
   const addItem = (product, qty = 1) => {
     if (qty <= 0) return; // Evitar cantidades inválidas
     setItems(prev => {
@@ -37,22 +37,22 @@ export function CartProvider({ children }) {
     });
   };
 
-  // 🔹 Eliminar producto por ID
+  //  Eliminar producto por ID
   const removeItem = (id) => setItems(prev => prev.filter(i => i.id !== id));
 
-  // 🔹 Vaciar carrito completo
+  //  Vaciar carrito completo
   const clearCart = () => setItems([]);
 
-  // 🔹 Calcular totales y conteo
+  //  Calcular totales y conteo
   const total = useMemo(() => items.reduce((acc, i) => acc + i.price * i.qty, 0), [items]);
   const count = useMemo(() => items.reduce((acc, i) => acc + i.qty, 0), [items]);
 
-  // 🔹 Formateo de moneda (pesos chilenos)
+  //  Formateo de moneda (pesos chilenos)
   const formattedTotal = useMemo(() => {
     return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(total);
   }, [total]);
 
-  // 🔹 Contexto compartido
+  //  Contexto compartido
   const value = { items, addItem, removeItem, clearCart, total, formattedTotal, count };
 
   return (
@@ -62,7 +62,7 @@ export function CartProvider({ children }) {
   );
 }
 
-// 🔹 Hook personalizado con protección
+//  Hook personalizado con protección
 export function useCart() {
   const context = useContext(CartContext);
   if (!context) throw new Error('useCart debe usarse dentro de un CartProvider');

@@ -1,26 +1,45 @@
 // src/components/Footer.jsx
+import logo from '../assets/placeholder/logo.png'
+
 export default function Footer() {
   return (
     <footer className="mt-auto py-4 bg-light border-top">
       <div className="container text-center small">
-        {/* Logo */}
+        {/*  Logo */}
         <div className="mb-2">
           <img
-            src="/placeholder/logo.png"
+            src={logo}
             alt="PetCare Logo"
             className="img-fluid"
-            style={{ maxWidth: '90px' }}
+            style={{
+              maxWidth: '80px',
+              opacity: 0.9,
+            }}
           />
         </div>
 
-        {/* Texto */}
-        <div>© {new Date().getFullYear()} <strong>PetCare</strong>. Todos los derechos reservados.</div>
-        <div className="text-muted">Hecho con ❤️ usando React + Vite + Bootstrap</div>
+        {/*  Texto */}
+        <div className="fw-semibold text-dark">
+          © {new Date().getFullYear()} <strong>PetCare</strong>. Todos los derechos reservados.
+        </div>
+        <div className="text-muted mb-2">
+          Hecho con ❤️ para tus mascotas.
+        </div>
 
-        {/* Enlaces rápidos */}
+        {/* 🔹 Enlaces rápidos */}
         <div className="mt-2">
-          <a href="/nosotros" className="text-decoration-none me-3 text-primary">Nosotros</a>
-          <a href="/contacto" className="text-decoration-none text-primary">Contacto</a>
+          <a
+            href="/nosotros"
+            className="text-decoration-none me-3 text-success fw-semibold"
+          >
+            Nosotros
+          </a>
+          <a
+            href="/contacto"
+            className="text-decoration-none text-success fw-semibold"
+          >
+            Contacto
+          </a>
         </div>
       </div>
     </footer>

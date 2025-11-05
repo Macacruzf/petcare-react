@@ -1,4 +1,3 @@
-// src/pages/Registro.jsx
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -22,25 +21,35 @@ export default function Registro() {
       return
     }
 
-    // 🔹 Simulación de registro exitoso
-    localStorage.setItem('user', JSON.stringify(formData))
+    // 🔹 Simulación de registro exitoso (rol cliente)
+    const nuevoUsuario = {
+      nombre: formData.nombre.trim(),
+      email: formData.correo.trim(),
+      password: formData.password.trim(),
+      rol: 'cliente'
+    }
+
+    localStorage.setItem('usuario', JSON.stringify(nuevoUsuario))
     setSuccess(true)
 
+    // Redirigir al login después de 2 segundos
     setTimeout(() => navigate('/login'), 2000)
   }
 
   return (
     <div className="container py-5" style={{ maxWidth: 480 }}>
+      {/* Encabezado con logo */}
       <div className="text-center mb-4">
         <img
-          src="/placeholder/logo.png"
+          src="/src/assets/placeholder/logo.png"
           alt="PetCare Logo"
           className="img-fluid mb-2"
           style={{ maxWidth: '120px' }}
         />
-        <h2 className="fw-bold">Crear cuenta</h2>
+        <h2 className="fw-bold text-success">Crear cuenta</h2>
       </div>
 
+      {/* Formulario */}
       <form
         className={`card card-body shadow-sm needs-validation ${validated ? 'was-validated' : ''}`}
         noValidate
@@ -94,7 +103,7 @@ export default function Registro() {
           </div>
         )}
 
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className="btn btn-success w-100">
           Crear cuenta
         </button>
 
