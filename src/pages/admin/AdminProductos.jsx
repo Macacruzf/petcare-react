@@ -1,29 +1,20 @@
 // src/pages/admin/AdminProductos.jsx
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { productos as dataInicial } from '../../data/data.js'
+import { useLocalStorage } from '../../hooks'
 
 export default function AdminProductos() {
-  const [productos, setProductos] = useState([])
   const navigate = useNavigate()
-
-  // 🔹 Cargar productos desde localStorage o data.js
-  useEffect(() => {
-    const guardados = localStorage.getItem('productos')
-    if (guardados) {
-      setProductos(JSON.parse(guardados))
-    } else {
-      setProductos(dataInicial)
-      localStorage.setItem('productos', JSON.stringify(dataInicial))
-    }
-  }, [])
+  
+  // 🎣 Hook personalizado useLocalStorage
+  const [productos, setProductos] = useLocalStorage('productos', dataInicial)
 
   // 🔹 Eliminar producto
   const eliminarProducto = (id) => {
     if (confirm('¿Deseas eliminar este producto?')) {
       const nuevos = productos.filter((p) => p.id !== id)
       setProductos(nuevos)
-      localStorage.setItem('productos', JSON.stringify(nuevos))
     }
   }
 

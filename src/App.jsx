@@ -1,25 +1,29 @@
 // src/App.jsx
 import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar.jsx'
-import Footer from './components/Footer.jsx'
+import Navbar from './components/layout/Navbar.jsx'
+import Footer from './components/layout/Footer.jsx'
 
-//  Páginas Públicas y E-commerce
-import Home from './pages/Home.jsx'
-import Productos from './pages/Productos.jsx'
-import ProductDetail from './pages/ProductDetail.jsx'
-import Carrito from './pages/Carrito.jsx'
-import Pago from './pages/Pago.jsx'
-import Gracias from './pages/Gracias.jsx'
-import Login from './pages/Login.jsx'
-import Registro from './pages/Registro.jsx'
-import Nosotros from './pages/Nosotros.jsx'
-import Contacto from './pages/Contacto.jsx'
-import Ofertas from './pages/Ofertas.jsx'
+//  Páginas Públicas
+import Home from './pages/public/Home.jsx'
+import Nosotros from './pages/public/Nosotros.jsx'
+import Contacto from './pages/public/Contacto.jsx'
+
+// E-commerce / Shop
+import Productos from './pages/shop/Productos.jsx'
+import ProductDetail from './pages/shop/ProductDetail.jsx'
+import Carrito from './pages/shop/Carrito.jsx'
+import Pago from './pages/shop/Pago.jsx'
+import Gracias from './pages/shop/Gracias.jsx'
+import Ofertas from './pages/shop/Ofertas.jsx'
+
+// Auth
+import Login from './pages/auth/Login.jsx'
+import Registro from './pages/auth/Registro.jsx'
 
 // 📰Blog
-import Blog from './pages/Blog.jsx'
-import BlogComida from './pages/BlogComida.jsx'
-import BlogVacuna from './pages/BlogVacuna.jsx'
+import Blog from './pages/blog/Blog.jsx'
+import BlogComida from './pages/blog/BlogComida.jsx'
+import BlogVacuna from './pages/blog/BlogVacuna.jsx'
 
 //  Administración
 import AdminRoutes from './pages/admin/AdminRoutes.jsx'

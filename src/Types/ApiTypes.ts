@@ -1,0 +1,104 @@
+// src/Types/ApiTypes.ts
+
+/**
+ * Interfaces que coinciden con los DTOs de los microservicios Java
+ */
+
+// ==================== USUARIO SERVICE ====================
+
+export interface UsuarioDto {
+  id?: number
+  nombre: string
+  apellido: string
+  email: string
+  password?: string // No se devuelve en respuestas, solo se envía al crear/actualizar
+  direccion: string
+  telefono: string
+  rol?: 'ADMIN' | 'CLIENTE'
+}
+
+export interface LoginRequest {
+  email: string
+  password: string
+}
+
+export interface LoginResponse {
+  token: string
+  rol: string
+  userId: number
+}
+
+// ==================== PRODUCTOS SERVICE ====================
+
+export interface ProductoDto {
+  id?: number
+  nombre: string
+  descripcion: string
+  precio: number
+  stock: number
+  categoria: string
+  imagen?: string
+}
+
+export interface DescontarStockRequest {
+  cantidad: number
+}
+
+// ==================== CARRITO SERVICE ====================
+
+export interface CarritoDto {
+  id?: number
+  usuarioId: number
+  items: CarritoItemDto[]
+  total?: number
+}
+
+export interface CarritoItemDto {
+  id?: number
+  productoId: number
+  cantidad: number
+  precio: number
+  subtotal?: number
+  nombreProducto?: string
+}
+
+export interface AgregarItemRequest {
+  productoId: number
+  cantidad: number
+}
+
+// ==================== PEDIDOS SERVICE ====================
+
+export interface PedidoDto {
+  id?: number
+  usuarioId: number
+  items: PedidoItemDto[]
+  total: number
+  estado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO'
+  fechaCreacion?: string
+}
+
+export interface PedidoItemDto {
+  id?: number
+  productoId: number
+  cantidad: number
+  precio: number
+  subtotal?: number
+}
+
+export interface CambiarEstadoRequest {
+  nuevoEstado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO'
+}
+
+// ==================== RESPONSE GENERICS ====================
+
+export interface ApiResponse<T> {
+  data?: T
+  message?: string
+  error?: string
+}
+
+export interface ApiError {
+  message: string
+  status?: number
+}

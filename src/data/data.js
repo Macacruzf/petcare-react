@@ -1,13 +1,13 @@
 // src/data/data.js
-import arnes from '../assets/placeholder/arnes.jpg';
-import cama from '../assets/placeholder/cama.jpg';
-import casagato from '../assets/placeholder/casagato.jpg';
-import collar from '../assets/placeholder/collar.jpg';
-import comidagato from '../assets/placeholder/comidagato.jpg';
-import correa from '../assets/placeholder/correa.jpg';
-import juguete from '../assets/placeholder/juguete.jpg';
-import plato from '../assets/placeholder/plato.jpg';
-import shampoo from '../assets/placeholder/shampo.jpg';
+import arnes from '../assets/images/arnes.jpg';
+import cama from '../assets/images/cama.jpg';
+import casagato from '../assets/images/casagato.jpg';
+import collar from '../assets/images/collar.jpg';
+import comidagato from '../assets/images/comidagato.jpg';
+import correa from '../assets/images/correa.jpg';
+import juguete from '../assets/images/juguete.jpg';
+import plato from '../assets/images/plato.jpg';
+import shampoo from '../assets/images/shampo.jpg';
 
 export const productos = [
   {
