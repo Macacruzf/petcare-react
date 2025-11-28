@@ -80,17 +80,22 @@ export interface AgregarItemRequest {
 export interface PedidoDto {
   id?: number
   usuarioId: number
-  items: PedidoItemDto[]
+  nombreUsuario?: string
+  emailUsuario?: string
+  items?: PedidoItemDto[]  // Opcional para compatibilidad
+  detalles?: PedidoItemDto[]  // Campo que realmente devuelve el backend
   total: number
-  estado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO'
+  estado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO' | 'POR_ENTREGAR'
   fechaCreacion?: string
 }
 
 export interface PedidoItemDto {
   id?: number
   productoId: number
+  nombreProducto?: string
   cantidad: number
-  precio: number
+  precio?: number
+  precioUnitario?: number
   subtotal?: number
 }
 

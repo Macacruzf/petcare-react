@@ -61,18 +61,16 @@ export const obtenerPedidosPorUsuario = async (
 
 /**
  * Cambia el estado de un pedido (solo ADMIN)
- * PUT /pedidos/{id}/estado
- * Body: { nuevoEstado }
+ * PUT /pedidos/{id}/estado?estado=NUEVO_ESTADO
+ * Query param: estado
  */
 export const cambiarEstadoPedido = async (
   id: number,
   nuevoEstado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO'
 ): Promise<PedidoDto> => {
-  const url = buildApiUrl(SERVICE, `/pedidos/${id}/estado`)
-  const request: CambiarEstadoRequest = { nuevoEstado }
+  const url = buildApiUrl(SERVICE, `/pedidos/${id}/estado?estado=${nuevoEstado}`)
   return fetchApi<PedidoDto>(url, {
     method: 'PUT',
-    body: JSON.stringify(request),
   })
 }
 
@@ -112,8 +110,13 @@ export const filtrarPedidosPorEstado = (
  * Calcula el total de un pedido
  */
 export const calcularTotalPedido = (pedido: PedidoDto): number => {
-  return pedido.items.reduce((total, item) => {
-    return total + item.precio * item.cantidad
+  // El backend devuelve 'detalles' en lugar de 'items'
+  const items = (pedido as any).detalles || pedido.items || []
+  if (!items || items.length === 0) return pedido.total || 0
+  
+  return items.reduce((total: number, item: any) => {
+    const precio = item.precioUnitario || item.precio || 0
+    return total + precio * item.cantidad
   }, 0)
 }
 

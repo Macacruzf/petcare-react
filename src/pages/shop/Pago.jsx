@@ -42,25 +42,25 @@ export default function Pago() {
     setError(null)
 
     try {
-      // 1️⃣ Sincronizar carrito de localStorage con el backend
+      // Sincronizar carrito de localStorage con el backend antes de crear el pedido
       const { agregarItemCarritoActual, vaciarCarritoActual } = await import('../../services/carritoService')
       
-      // Primero vaciar el carrito del backend por si tiene items antiguos
+      // Vaciar el carrito del backend
       await vaciarCarritoActual()
       
-      // Luego agregar cada item del localStorage al backend
+      // Agregar cada item del localStorage al backend
       for (const item of items) {
         await agregarItemCarritoActual(item.id, item.qty)
       }
 
-      // 2️⃣ Crear pedido desde el carrito del usuario en la base de datos
+      // Crear pedido desde el carrito del usuario en la base de datos
       await crearPedidoActual()
       
-      // 3️⃣ Limpiar carrito local y navegar
+      // Limpiar carrito local y navegar
       clearCart()
       navigate('/gracias')
     } catch (err) {
-      console.error('❌ Error al procesar el pago:', err)
+      console.error('Error al procesar el pago:', err)
       setError(err.message || 'Error al procesar el pago. Intenta nuevamente.')
       setLoading(false)
     }

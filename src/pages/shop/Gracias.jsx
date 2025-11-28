@@ -26,9 +26,16 @@ export default function Gracias() {
         Pronto te notificaremos cuando tu envío esté en camino.
       </p>
 
-      <Link className="btn btn-success px-4" to="/">
-        Volver al inicio
-      </Link>
+      <div className="d-flex justify-content-center gap-3">
+        <Link className="btn btn-success px-4" to="/">
+          <i className="fa-solid fa-home me-2"></i>
+          Volver al inicio
+        </Link>
+        <Link className="btn btn-outline-success px-4" to="/mis-pedidos">
+          <i className="fa-solid fa-box me-2"></i>
+          Ver mis pedidos
+        </Link>
+      </div>
     </div>
   )
 }

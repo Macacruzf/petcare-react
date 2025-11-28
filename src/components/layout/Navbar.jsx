@@ -76,6 +76,14 @@ export default function Navbar() {
                   <strong className="text-white">{usuario.nombre}</strong>{' '}
                   {usuario.rol === 'ADMIN' && '(Admin)'}
                 </span>
+                
+                {/* Mis Pedidos - Solo visible para clientes */}
+                {!isAdmin && (
+                  <NavLink className="btn btn-outline-light" to="/mis-pedidos">
+                    <i className="fa-solid fa-box me-1"></i> Mis Pedidos
+                  </NavLink>
+                )}
+                
                 <button className="btn btn-outline-light" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket me-1"></i> Cerrar sesión
                 </button>

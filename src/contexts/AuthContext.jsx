@@ -34,6 +34,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    // Limpiar todos los carritos del localStorage
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('cart_')) {
+        localStorage.removeItem(key);
+      }
+    });
+    localStorage.removeItem('cart');
+    localStorage.removeItem('cart_guest');
+    
     setUsuario(null);
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");

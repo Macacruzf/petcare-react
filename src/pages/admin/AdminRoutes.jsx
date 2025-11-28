@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import AdminHome from './AdminHome.jsx'
 import AdminProductos from './AdminProductos.jsx'
 import AdminUsuarios from './AdminUsuarios.jsx'
+import AdminPedidos from './AdminPedidos.jsx'
 import FormProducto from './FormProducto.jsx'
 import FormUsuario from './FormUsuario.jsx'
 
@@ -53,6 +54,15 @@ export default function AdminRoutes() {
         >
           Usuarios
         </NavLink>
+
+        <NavLink
+          to="/admin/pedidos"
+          className={({ isActive }) =>
+            `btn ${isActive ? 'btn-primary' : 'btn-outline-secondary'}`
+          }
+        >
+          Pedidos
+        </NavLink>
       </div>
 
       {/* 🔹 Rutas internas del panel */}
@@ -64,6 +74,7 @@ export default function AdminRoutes() {
         <Route path="usuarios" element={<AdminUsuarios />} />
         <Route path="usuarios/nuevo" element={<FormUsuario />} />
         <Route path="usuarios/:id" element={<FormUsuario />} />
+        <Route path="pedidos" element={<AdminPedidos />} />
       </Routes>
     </div>
   )

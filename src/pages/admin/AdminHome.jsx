@@ -7,19 +7,24 @@ export default function AdminHome() {
   const [usuarios, setUsuarios] = useState([])
   const { usuario } = useAuth()
 
+  const [pedidos, setPedidos] = useState([])
+
   useEffect(() => {
     const cargarDatos = async () => {
       try {
         const { obtenerTodosProductos } = await import('../../services/productosService')
         const { obtenerTodosUsuarios } = await import('../../services/usuarioService')
+        const { obtenerTodosPedidos } = await import('../../services/pedidosService')
         
-        const [prods, users] = await Promise.all([
+        const [prods, users, orders] = await Promise.all([
           obtenerTodosProductos(),
-          obtenerTodosUsuarios()
+          obtenerTodosUsuarios(),
+          obtenerTodosPedidos()
         ])
         
         setProductos(prods)
         setUsuarios(users)
+        setPedidos(orders)
       } catch (err) {
         console.error('Error al cargar datos:', err)
       }
@@ -40,7 +45,7 @@ export default function AdminHome() {
 
           {/* 🔹 Resumen rápido */}
           <div className="row text-center">
-            <div className="col-md-4 mb-3">
+            <div className="col-md-3 mb-3">
               <div className="card bg-light shadow-sm border-0">
                 <div className="card-body">
                   <i className="fa-solid fa-box fa-2x text-primary mb-2"></i>
@@ -50,7 +55,7 @@ export default function AdminHome() {
               </div>
             </div>
 
-            <div className="col-md-4 mb-3">
+            <div className="col-md-3 mb-3">
               <div className="card bg-light shadow-sm border-0">
                 <div className="card-body">
                   <i className="fa-solid fa-users fa-2x text-success mb-2"></i>
@@ -60,7 +65,17 @@ export default function AdminHome() {
               </div>
             </div>
 
-            <div className="col-md-4 mb-3">
+            <div className="col-md-3 mb-3">
+              <div className="card bg-light shadow-sm border-0">
+                <div className="card-body">
+                  <i className="fa-solid fa-shopping-cart fa-2x text-warning mb-2"></i>
+                  <h5 className="fw-bold mb-0">{pedidos.length}</h5>
+                  <small className="text-muted">Pedidos totales</small>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3 mb-3">
               <div className="card bg-light shadow-sm border-0">
                 <div className="card-body">
                   <i className="fa-solid fa-lock fa-2x text-danger mb-2"></i>

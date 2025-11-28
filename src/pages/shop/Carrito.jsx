@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import placeholder from '../../assets/images/logo.png'
 
 export default function Carrito() {
-  const { items, removeItem, clearCart, formattedTotal } = useCart()
+  const { items, removeItem, incrementItem, decrementItem, clearCart, formattedTotal } = useCart();
 
   if (items.length === 0) {
     return (
@@ -48,13 +48,30 @@ export default function Carrito() {
                 <td>
                   {new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(i.precio)}
                 </td>
-                <td>{i.qty}</td>
+                <td>
+                  <div className="d-flex align-items-center justify-content-center gap-2">
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => decrementItem(i.id)}
+                      disabled={i.qty <= 1}
+                    >
+                      -
+                    </button>
+                    <span className="fw-bold">{i.qty}</span>
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => incrementItem(i.id)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </td>
                 <td>
                   {new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(i.precio * i.qty)}
                 </td>
                 <td>
                   <button
-                    className="btn btn-sm btn-outline-danger"
+                    className="btn btn-sm btn-danger"
                     onClick={() => removeItem(i.id)}
                   >
                     Eliminar

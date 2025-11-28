@@ -1,0 +1,170 @@
+.admin-pedidos-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-pedidos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-pedidos-header h2 {
+  color: #2c3e50;
+  margin: 0;
+}
+
+.filtros-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filtros-container label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Badges personalizados */
+.badge-warning {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.badge-info {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.badge-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.badge-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.badge-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.badge-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Tabla */
+.table-responsive {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.table th {
+  border-top: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+/* Select de estado */
+.form-select-sm {
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.form-select-sm:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Alertas */
+.alert {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones */
+.btn-link {
+  text-decoration: none;
+  padding: 0;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 8px;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+  border-top: 2px solid #dee2e6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-pedidos-container {
+    padding: 1rem;
+  }
+
+  .admin-pedidos-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filtros-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    border-radius: 0.25rem !important;
+    margin-bottom: 0.25rem;
+  }
+
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+
+  .form-select-sm {
+    min-width: 100px;
+    font-size: 0.75rem;
+  }
+}

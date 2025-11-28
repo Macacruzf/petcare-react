@@ -15,6 +15,7 @@ import Carrito from './pages/shop/Carrito.jsx'
 import Pago from './pages/shop/Pago.jsx'
 import Gracias from './pages/shop/Gracias.jsx'
 import Ofertas from './pages/shop/Ofertas.jsx'
+import MisPedidos from './pages/shop/MisPedidos.jsx'
 
 // Auth
 import Login from './pages/auth/Login.jsx'
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/pago" element={<Pago />} />
           <Route path="/gracias" element={<Gracias />} />
           <Route path="/ofertas" element={<Ofertas />} />
+          <Route path="/mis-pedidos" element={<MisPedidos />} />
 
           {/* 📰 Blog */}
           <Route path="/blog" element={<Blog />} />
