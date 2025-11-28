@@ -3,6 +3,6 @@
 
 export { useForm } from './useForm';
 export { useLocalStorage } from './useLocalStorage';
-export { useAuth } from './useAuth';
+// useAuth ahora está en contexts/AuthContext.jsx
 export { useToggle } from './useToggle';
 export { useFetch } from './useFetch';

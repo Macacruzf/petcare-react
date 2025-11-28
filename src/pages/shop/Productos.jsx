@@ -1,19 +1,40 @@
 // src/pages/shop/Productos.jsx
-import { useState } from "react";
-import { productos } from "../../data/data";
+import { useState, useEffect } from "react";
+import { obtenerTodosProductos } from "../../services/productosService";
 import ProductCard from "../../components/common/ProductCard.jsx";
 
 export default function Productos() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 🔹 Cargar productos desde el microservicio
+  useEffect(() => {
+    const cargarProductos = async () => {
+      try {
+        setLoading(true);
+        const data = await obtenerTodosProductos();
+        setProductos(data);
+      } catch (err) {
+        setError('Error al cargar productos: ' + err.message);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    cargarProductos();
+  }, []);
 
   // 🔹 Extraer categorías únicas
-  const categorias = ["Todos", ...new Set(productos.map((p) => p.categoria))];
+  const categorias = ["Todos", ...new Set(productos.map((p) => p.categoria?.nombre).filter(Boolean))];
 
   // 🔹 Filtrar productos por categoría
   const productosFiltrados =
     categoriaSeleccionada === "Todos"
       ? productos
-      : productos.filter((p) => p.categoria === categoriaSeleccionada);
+      : productos.filter((p) => p.categoria?.nombre === categoriaSeleccionada);
 
   return (
     <div className="container py-4">
@@ -37,11 +58,22 @@ export default function Productos() {
       </div>
 
       {/* 🔸 Grilla de productos */}
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        {productosFiltrados.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="text-muted mt-2">Cargando productos...</p>
+        </div>
+      ) : error ? (
+        <div className="alert alert-danger">{error}</div>
+      ) : (
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          {productosFiltrados.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

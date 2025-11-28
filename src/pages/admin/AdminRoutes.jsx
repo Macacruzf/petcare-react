@@ -1,5 +1,6 @@
 // src/pages/admin/AdminRoutes.jsx
 import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 import AdminHome from './AdminHome.jsx'
 import AdminProductos from './AdminProductos.jsx'
 import AdminUsuarios from './AdminUsuarios.jsx'
@@ -7,7 +8,7 @@ import FormProducto from './FormProducto.jsx'
 import FormUsuario from './FormUsuario.jsx'
 
 export default function AdminRoutes() {
-  const usuario = JSON.parse(localStorage.getItem('usuario'))
+  const { usuario, esAdministrador } = useAuth()
 
   // 🔒 Verificación de acceso
   if (!usuario) {
@@ -15,7 +16,7 @@ export default function AdminRoutes() {
     return <Navigate to="/login" />
   }
 
-  if (usuario.rol !== 'admin') {
+  if (!esAdministrador()) {
     // Es cliente o usuario común
     return <Navigate to="/" />
   }

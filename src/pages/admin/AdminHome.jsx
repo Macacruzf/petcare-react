@@ -1,19 +1,31 @@
 // src/pages/admin/AdminHome.jsx
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function AdminHome() {
   const [productos, setProductos] = useState([])
   const [usuarios, setUsuarios] = useState([])
-  const [admin, setAdmin] = useState(null)
+  const { usuario } = useAuth()
 
   useEffect(() => {
-    const p = JSON.parse(localStorage.getItem('productos')) || []
-    const u = JSON.parse(localStorage.getItem('usuarios')) || []
-    const a = JSON.parse(localStorage.getItem('usuario')) || null
-
-    setProductos(p)
-    setUsuarios(u)
-    setAdmin(a)
+    const cargarDatos = async () => {
+      try {
+        const { obtenerTodosProductos } = await import('../../services/productosService')
+        const { obtenerTodosUsuarios } = await import('../../services/usuarioService')
+        
+        const [prods, users] = await Promise.all([
+          obtenerTodosProductos(),
+          obtenerTodosUsuarios()
+        ])
+        
+        setProductos(prods)
+        setUsuarios(users)
+      } catch (err) {
+        console.error('Error al cargar datos:', err)
+      }
+    }
+    
+    cargarDatos()
   }, [])
 
   return (
@@ -22,7 +34,7 @@ export default function AdminHome() {
         <div className="card-body">
           <h3 className="fw-bold mb-3">Panel de Administración</h3>
           <p className="text-muted mb-4">
-            Bienvenido{admin ? `, ${admin.nombre}` : ''}. Aquí puedes gestionar los productos,
+            Bienvenido{usuario ? `, ${usuario.nombre}` : ''}. Aquí puedes gestionar los productos,
             usuarios y revisar el estado general del sistema PetCare Connect.
           </p>
 
@@ -53,7 +65,7 @@ export default function AdminHome() {
                 <div className="card-body">
                   <i className="fa-solid fa-lock fa-2x text-danger mb-2"></i>
                   <h5 className="fw-bold mb-0">
-                    {admin && admin.rol === 'admin' ? 'Administrador' : 'Cliente'}
+                    {usuario?.rol === 'ADMIN' ? 'Administrador' : 'Cliente'}
                   </h5>
                   <small className="text-muted">Rol actual</small>
                 </div>

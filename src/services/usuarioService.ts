@@ -26,7 +26,7 @@ export const registrarUsuario = async (
 }
 
 /**
- * Inicia sesión y obtiene token JWT
+ * Inicia sesión (sin JWT, solo validación por roles)
  * POST /usuarios/login
  */
 export const loginUsuario = async (
@@ -38,12 +38,10 @@ export const loginUsuario = async (
     body: JSON.stringify(credentials),
   })
 
-  // Guardar token en localStorage
-  if (response.token) {
-    localStorage.setItem('token', response.token)
-    localStorage.setItem('userId', response.userId.toString())
-    localStorage.setItem('userRole', response.rol)
-  }
+  // Guardar solo datos del usuario (sin token)
+  localStorage.setItem('userId', response.userId.toString())
+  localStorage.setItem('userRole', response.rol)
+  localStorage.setItem('userName', response.nombre)
 
   return response
 }
@@ -52,9 +50,9 @@ export const loginUsuario = async (
  * Cierra sesión (limpia localStorage)
  */
 export const logoutUsuario = (): void => {
-  localStorage.removeItem('token')
   localStorage.removeItem('userId')
   localStorage.removeItem('userRole')
+  localStorage.removeItem('userName')
 }
 
 /**

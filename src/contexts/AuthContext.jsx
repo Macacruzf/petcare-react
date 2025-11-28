@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { usuarios } from "../data/usuarios";
 
 const AuthContext = createContext();
 
@@ -9,29 +8,44 @@ export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    const guardado = localStorage.getItem("usuario");
-    if (guardado) setUsuario(JSON.parse(guardado));
+    // Cargar datos del usuario desde localStorage (guardados por usuarioService)
+    const userId = localStorage.getItem("userId");
+    const userName = localStorage.getItem("userName");
+    const userRole = localStorage.getItem("userRole");
+
+    if (userId && userRole) {
+      setUsuario({
+        id: parseInt(userId),
+        nombre: userName || "Usuario",
+        rol: userRole
+      });
+    }
   }, []);
 
-  const login = (email, password) => {
-    const user = usuarios.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (user) {
-      setUsuario(user);
-      localStorage.setItem("usuario", JSON.stringify(user));
-      return true;
-    }
-    return false;
+  const login = (userData) => {
+    // userData viene del backend con: userId, nombre, apellido, email, rol
+    setUsuario({
+      id: userData.userId,
+      nombre: userData.nombre,
+      email: userData.email,
+      rol: userData.rol
+    });
+    return true;
   };
 
   const logout = () => {
     setUsuario(null);
-    localStorage.removeItem("usuario");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userRole");
+  };
+
+  const esAdministrador = () => {
+    return usuario?.rol === "ADMIN";
   };
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout }}>
+    <AuthContext.Provider value={{ usuario, login, logout, esAdministrador }}>
       {children}
     </AuthContext.Provider>
   );

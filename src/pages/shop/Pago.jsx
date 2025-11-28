@@ -3,6 +3,7 @@ import { useCart } from '../../contexts/CartContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import logo from '../../assets/images/logo.png'
+import { crearPedidoActual } from '../../services/pedidosService'
 
 export default function Pago() {
   const { items, formattedTotal, clearCart } = useCart()
@@ -12,22 +13,58 @@ export default function Pago() {
     tarjeta: '',
   })
   const [validated, setValidated] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
 
     if (!form.checkValidity()) {
       e.stopPropagation()
-    } else {
+      setValidated(true)
+      return
+    }
+
+    // Verificar que el usuario esté autenticado
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      setError('Debes iniciar sesión para completar la compra')
+      return
+    }
+
+    setLoading(true)
+    setError(null)
+
+    try {
+      // 1️⃣ Sincronizar carrito de localStorage con el backend
+      const { agregarItemCarritoActual, vaciarCarritoActual } = await import('../../services/carritoService')
+      
+      // Primero vaciar el carrito del backend por si tiene items antiguos
+      await vaciarCarritoActual()
+      
+      // Luego agregar cada item del localStorage al backend
+      for (const item of items) {
+        await agregarItemCarritoActual(item.id, item.qty)
+      }
+
+      // 2️⃣ Crear pedido desde el carrito del usuario en la base de datos
+      await crearPedidoActual()
+      
+      // 3️⃣ Limpiar carrito local y navegar
       clearCart()
       navigate('/gracias')
+    } catch (err) {
+      console.error('❌ Error al procesar el pago:', err)
+      setError(err.message || 'Error al procesar el pago. Intenta nuevamente.')
+      setLoading(false)
     }
+
     setValidated(true)
   }
 
@@ -109,8 +146,25 @@ export default function Pago() {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-success w-100">
-              Confirmar pago ({formattedTotal})
+            {error && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {error}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              className="btn btn-success w-100"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Procesando pago...
+                </>
+              ) : (
+                `Confirmar pago (${formattedTotal})`
+              )}
             </button>
           </form>
         </div>

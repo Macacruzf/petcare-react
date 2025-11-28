@@ -1,30 +1,36 @@
 // src/pages/auth/Login.jsx
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { usuarios } from '../../data/usuarios'
+import { loginUsuario } from '../../services/usuarioService'
+import { useAuth } from '../../contexts/AuthContext'
 import logo from '../../assets/images/logo.png'
 import { useForm } from '../../hooks'
 
 export default function Login() {
   const [validated, setValidated] = useState(false)
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   // 🎣 Hook personalizado useForm
-  const { values, errors, handleChange, handleSubmit, setError } = useForm(
+  const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
     { correo: '', password: '' },
     async (formValues) => {
-      // Buscar usuario en la lista simulada
-      const user = usuarios.find(
-        (u) =>
-          u.email === formValues.correo.trim() &&
-          u.password === formValues.password.trim()
-      )
+      // Llamar al microservicio de login
+      const response = await loginUsuario({
+        email: formValues.correo.trim(),
+        password: formValues.password.trim()
+      })
 
-      if (user) {
-        localStorage.setItem('usuario', JSON.stringify(user))
-        navigate(user.rol === 'admin' ? '/admin' : '/')
+      // Actualizar AuthContext con los datos del usuario
+      login(response)
+
+      console.log('Login exitoso:', response)
+
+      // Redirigir según el rol
+      if (response.rol === 'ADMIN') {
+        navigate('/admin')
       } else {
-        throw { errors: { general: 'Correo o contraseña incorrectos.' } }
+        navigate('/')
       }
     }
   )
@@ -100,8 +106,8 @@ export default function Login() {
           </div>
         )}
 
-        <button type="submit" className="btn btn-success w-100">
-          Ingresar
+        <button type="submit" className="btn btn-success w-100" disabled={isSubmitting}>
+          {isSubmitting ? 'Ingresando...' : 'Ingresar'}
         </button>
 
         <p className="text-center mt-3 small">

@@ -1,6 +1,11 @@
 // src/pages/admin/FormProducto.jsx
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { 
+  obtenerProductoPorId, 
+  crearProducto, 
+  actualizarProducto 
+} from '../../services/productosService'
 
 export default function FormProducto() {
   const { id } = useParams()
@@ -10,17 +15,44 @@ export default function FormProducto() {
     nombre: '',
     precio: '',
     descripcion: '',
-    categoria: '',
-    oferta: false,
+    categoriaId: '',
+    stock: '',
     imagen: ''
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  // Categorías disponibles (corresponden a la BD)
+  const categorias = [
+    { id: 1, nombre: 'Accesorios' },
+    { id: 2, nombre: 'Juguetes' },
+    { id: 3, nombre: 'Alimentos' },
+    { id: 4, nombre: 'Higiene' }
+  ]
 
   // 🔹 Cargar datos si es edición
   useEffect(() => {
-    const guardados = JSON.parse(localStorage.getItem('productos')) || []
     if (isEdit) {
-      const encontrado = guardados.find((p) => p.id === Number(id))
-      if (encontrado) setProducto(encontrado)
+      const cargarProducto = async () => {
+        try {
+          setLoading(true)
+          const data = await obtenerProductoPorId(Number(id))
+          setProducto({
+            nombre: data.nombre,
+            precio: data.precio,
+            descripcion: data.descripcion || '',
+            categoriaId: data.categoria.id,
+            stock: data.stock,
+            imagen: data.imagen || ''
+          })
+        } catch (err) {
+          setError('Error al cargar el producto: ' + err.message)
+          console.error(err)
+        } finally {
+          setLoading(false)
+        }
+      }
+      cargarProducto()
     }
   }, [id, isEdit])
 
@@ -34,29 +66,47 @@ export default function FormProducto() {
   }
 
   // 🔹 Guardar producto (crear o editar)
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    const guardados = JSON.parse(localStorage.getItem('productos')) || []
+    setLoading(true)
+    setError(null)
 
-    if (isEdit) {
-      // Actualizar producto existente
-      const actualizados = guardados.map((p) =>
-        p.id === Number(id) ? { ...producto, id: Number(id) } : p
-      )
-      localStorage.setItem('productos', JSON.stringify(actualizados))
-      alert('✅ Producto actualizado correctamente')
-    } else {
-      // Crear nuevo producto
-      const nuevo = {
-        ...producto,
-        id: guardados.length > 0 ? guardados[guardados.length - 1].id + 1 : 1
+    try {
+      const productoData = {
+        nombre: producto.nombre,
+        precio: Number(producto.precio),
+        descripcion: producto.descripcion,
+        categoriaId: Number(producto.categoriaId),
+        stock: Number(producto.stock),
+        imagen: producto.imagen
       }
-      const nuevos = [...guardados, nuevo]
-      localStorage.setItem('productos', JSON.stringify(nuevos))
-      alert('✅ Producto creado correctamente')
-    }
 
-    navigate('/admin/productos')
+      if (isEdit) {
+        // Actualizar producto existente
+        await actualizarProducto(Number(id), productoData)
+        alert('✅ Producto actualizado correctamente')
+      } else {
+        // Crear nuevo producto
+        await crearProducto(productoData)
+        alert('✅ Producto creado correctamente')
+      }
+
+      navigate('/admin/productos')
+    } catch (err) {
+      setError('Error al guardar el producto: ' + err.message)
+      console.error(err)
+      setLoading(false)
+    }
+  }
+
+  if (loading && isEdit) {
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -65,6 +115,12 @@ export default function FormProducto() {
         <h3 className="mb-3 fw-bold">
           {isEdit ? 'Editar producto' : 'Nuevo producto'}
         </h3>
+
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
 
         {/* Nombre */}
         <div className="mb-3">
@@ -108,32 +164,32 @@ export default function FormProducto() {
           <label className="form-label">Categoría</label>
           <select
             className="form-select"
-            name="categoria"
-            value={producto.categoria}
+            name="categoriaId"
+            value={producto.categoriaId}
             onChange={handleChange}
             required
           >
             <option value="">Selecciona una categoría</option>
-            <option value="Accesorios">Accesorios</option>
-            <option value="Alimentos">Alimentos</option>
-            <option value="Higiene">Higiene</option>
-            <option value="Juguetes">Juguetes</option>
+            {categorias.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.nombre}
+              </option>
+            ))}
           </select>
         </div>
 
-        {/* Oferta */}
-        <div className="form-check mb-3">
+        {/* Stock */}
+        <div className="mb-3">
+          <label className="form-label">Stock</label>
           <input
-            type="checkbox"
-            className="form-check-input"
-            id="oferta"
-            name="oferta"
-            checked={producto.oferta}
+            type="number"
+            className="form-control"
+            name="stock"
+            value={producto.stock}
             onChange={handleChange}
+            required
+            min="0"
           />
-          <label htmlFor="oferta" className="form-check-label">
-            ¿Producto en oferta?
-          </label>
         </div>
 
         {/* Imagen */}
@@ -144,12 +200,22 @@ export default function FormProducto() {
             name="imagen"
             value={producto.imagen}
             onChange={handleChange}
-            placeholder="/placeholder/imagen.jpg"
+            placeholder="/arnes.jpg"
           />
+          <small className="form-text text-muted">
+            Ejemplo: /arnes.jpg (archivo debe estar en la carpeta public/)
+          </small>
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Guardar
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Guardando...
+            </>
+          ) : (
+            'Guardar'
+          )}
         </button>
       </form>
     </div>

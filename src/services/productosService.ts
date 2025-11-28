@@ -99,7 +99,7 @@ export const obtenerProductosPorCategoria = async (
 ): Promise<ProductoDto[]> => {
   const productos = await obtenerTodosProductos()
   return productos.filter(
-    (p) => p.categoria.toLowerCase() === categoria.toLowerCase()
+    (p) => p.categoria?.nombre?.toLowerCase() === categoria.toLowerCase()
   )
 }
 

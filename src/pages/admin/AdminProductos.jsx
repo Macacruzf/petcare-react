@@ -1,20 +1,37 @@
 // src/pages/admin/AdminProductos.jsx
 import { Link, useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { productos as dataInicial } from '../../data/data.js'
-import { useLocalStorage } from '../../hooks'
+import { useEffect, useState } from 'react'
+import { obtenerTodosProductos } from '../../services/productosService'
 
 export default function AdminProductos() {
   const navigate = useNavigate()
-  
-  // 🎣 Hook personalizado useLocalStorage
-  const [productos, setProductos] = useLocalStorage('productos', dataInicial)
+  const [productos, setProductos] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // 🔹 Cargar productos desde el microservicio
+  useEffect(() => {
+    const cargarProductos = async () => {
+      try {
+        setLoading(true)
+        const data = await obtenerTodosProductos()
+        setProductos(data)
+      } catch (err) {
+        setError('Error al cargar productos: ' + err.message)
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    cargarProductos()
+  }, [])
 
   // 🔹 Eliminar producto
   const eliminarProducto = (id) => {
     if (confirm('¿Deseas eliminar este producto?')) {
-      const nuevos = productos.filter((p) => p.id !== id)
-      setProductos(nuevos)
+      // TODO: Implementar eliminación con microservicio
+      alert('Funcionalidad de eliminación pendiente de implementar')
     }
   }
 
@@ -27,7 +44,16 @@ export default function AdminProductos() {
         </Link>
       </div>
 
-      {productos.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="text-muted mt-2">Cargando productos...</p>
+        </div>
+      ) : error ? (
+        <div className="alert alert-danger">{error}</div>
+      ) : productos.length === 0 ? (
         <p className="text-muted">No hay productos registrados.</p>
       ) : (
         <div className="table-responsive">
@@ -38,7 +64,7 @@ export default function AdminProductos() {
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Categoría</th>
-                <th>Oferta</th>
+                <th>Stock</th>
                 <th></th>
               </tr>
             </thead>
@@ -48,8 +74,8 @@ export default function AdminProductos() {
                   <td>{p.id}</td>
                   <td>{p.nombre}</td>
                   <td>${p.precio.toLocaleString('es-CL')}</td>
-                  <td>{p.categoria}</td>
-                  <td>{p.oferta ? 'Sí' : 'No'}</td>
+                  <td>{p.categoria?.nombre}</td>
+                  <td>{p.stock} unidades</td>
                   <td className="text-end">
                     <div className="btn-group">
                       <button

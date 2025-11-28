@@ -23,12 +23,19 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string
-  rol: string
   userId: number
+  nombre: string
+  apellido: string
+  email: string
+  rol: string
 }
 
 // ==================== PRODUCTOS SERVICE ====================
+
+export interface CategoriaDto {
+  id: number
+  nombre: string
+}
 
 export interface ProductoDto {
   id?: number
@@ -36,8 +43,9 @@ export interface ProductoDto {
   descripcion: string
   precio: number
   stock: number
-  categoria: string
+  categoria: CategoriaDto
   imagen?: string
+  estado?: 'DISPONIBLE' | 'AGOTADO' | 'DESCONTINUADO'
 }
 
 export interface DescontarStockRequest {

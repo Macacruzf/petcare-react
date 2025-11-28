@@ -1,29 +1,37 @@
 // src/pages/admin/AdminUsuarios.jsx
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { usuarios as dataInicial } from '../../data/usuarios.js'
+import { obtenerTodosUsuarios } from '../../services/usuarioService'
 
 export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  // 🔹 Cargar usuarios desde localStorage o archivo base
+  // 🔹 Cargar usuarios desde el microservicio
   useEffect(() => {
-    const guardados = localStorage.getItem('usuarios')
-    if (guardados) {
-      setUsuarios(JSON.parse(guardados))
-    } else {
-      setUsuarios(dataInicial)
-      localStorage.setItem('usuarios', JSON.stringify(dataInicial))
+    const cargarUsuarios = async () => {
+      try {
+        setLoading(true)
+        const data = await obtenerTodosUsuarios()
+        setUsuarios(data)
+      } catch (err) {
+        setError('Error al cargar usuarios: ' + err.message)
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
     }
+    
+    cargarUsuarios()
   }, [])
 
   // 🔹 Eliminar usuario
   const eliminarUsuario = (id) => {
     if (confirm('¿Deseas eliminar este usuario?')) {
-      const nuevos = usuarios.filter((u) => u.id !== id)
-      setUsuarios(nuevos)
-      localStorage.setItem('usuarios', JSON.stringify(nuevos))
+      // TODO: Implementar eliminación con microservicio
+      alert('Funcionalidad de eliminación pendiente de implementar')
     }
   }
 
@@ -36,7 +44,16 @@ export default function AdminUsuarios() {
         </Link>
       </div>
 
-      {usuarios.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+          <p className="text-muted mt-2">Cargando usuarios...</p>
+        </div>
+      ) : error ? (
+        <div className="alert alert-danger">{error}</div>
+      ) : usuarios.length === 0 ? (
         <p className="text-muted">No hay usuarios registrados.</p>
       ) : (
         <div className="table-responsive">
@@ -54,12 +71,12 @@ export default function AdminUsuarios() {
               {usuarios.map((u) => (
                 <tr key={u.id}>
                   <td>{u.id}</td>
-                  <td>{u.nombre}</td>
+                  <td>{u.nombre} {u.apellido}</td>
                   <td>{u.email}</td>
                   <td>
                     <span
                       className={`badge ${
-                        u.rol === 'admin' ? 'bg-danger' : 'bg-success'
+                        u.rol === 'ADMIN' ? 'bg-danger' : 'bg-success'
                       }`}
                     >
                       {u.rol}

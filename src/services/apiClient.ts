@@ -11,10 +11,10 @@
 
 // URLs base de los microservicios (en producción usar variables de entorno)
 const MICROSERVICES = {
-  USUARIO: process.env.REACT_APP_USUARIO_URL || 'http://localhost:8081',
-  PRODUCTOS: process.env.REACT_APP_PRODUCTOS_URL || 'http://localhost:8082',
-  CARRITO: process.env.REACT_APP_CARRITO_URL || 'http://localhost:8083',
-  PEDIDOS: process.env.REACT_APP_PEDIDOS_URL || 'http://localhost:8084',
+  USUARIO: import.meta.env.VITE_USUARIO_URL || 'http://localhost:8081',
+  PRODUCTOS: import.meta.env.VITE_PRODUCTOS_URL || 'http://localhost:8082',
+  CARRITO: import.meta.env.VITE_CARRITO_URL || 'http://localhost:8083',
+  PEDIDOS: import.meta.env.VITE_PEDIDOS_URL || 'http://localhost:8084',
 }
 
 /**
@@ -31,13 +31,11 @@ export const buildApiUrl = (
 
 /**
  * Obtiene los headers comunes para las peticiones
- * Incluye token JWT si existe en localStorage
+ * (Sin JWT - autenticación por roles solamente)
  */
 export const getAuthHeaders = (): HeadersInit => {
-  const token = localStorage.getItem('token')
   return {
     'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
   }
 }
 

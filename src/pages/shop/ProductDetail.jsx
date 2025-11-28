@@ -1,23 +1,55 @@
 // src/pages/shop/ProductDetail.jsx
 import { useParams, Link } from "react-router-dom";
-import { productos } from "../../data/data";
+import { useState, useEffect } from "react";
+import { obtenerProductoPorId } from "../../services/productosService";
 import { useCart } from "../../contexts/CartContext.jsx";
 import { useToggle } from "../../hooks";
 
 export default function ProductDetail() {
   const { id } = useParams(); // 🆔 Obtiene el ID del producto desde la URL
   const { addItem } = useCart();
+  const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   // 🎣 Hook personalizado useToggle para mostrar descripción completa
   const [showFullDescription, toggleDescription] = useToggle(false);
 
-  // Buscar el producto por su ID
-  const producto = productos.find((p) => p.id === Number(id));
+  // 🔹 Cargar producto desde el microservicio
+  useEffect(() => {
+    const cargarProducto = async () => {
+      try {
+        setLoading(true);
+        const data = await obtenerProductoPorId(Number(id));
+        setProducto(data);
+      } catch (err) {
+        setError('Error al cargar el producto: ' + err.message);
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    cargarProducto();
+  }, [id]);
 
-  if (!producto) {
+  if (loading) {
     return (
       <div className="container py-5 text-center">
-        <h2 className="text-danger fw-bold mb-3">Producto no encontrado</h2>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+        <p className="text-muted mt-2">Cargando producto...</p>
+      </div>
+    );
+  }
+
+  if (error || !producto) {
+    return (
+      <div className="container py-5 text-center">
+        <h2 className="text-danger fw-bold mb-3">
+          {error || 'Producto no encontrado'}
+        </h2>
         <Link className="btn btn-primary" to="/productos">
           Volver a productos
         </Link>
@@ -45,7 +77,7 @@ export default function ProductDetail() {
           <h2 className="fw-bold mb-3 text-success">{producto.nombre}</h2>
 
           <p className="text-muted mb-1">
-            <strong>Categoría:</strong> {producto.categoria}
+            <strong>Categoría:</strong> {producto.categoria?.nombre}
           </p>
 
           <p className="fs-4 fw-bold text-success mb-3">

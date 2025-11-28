@@ -1,15 +1,16 @@
 // src/components/layout/Navbar.jsx
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useCart } from '../../contexts/CartContext.jsx'
+import { useAuth } from '../../contexts/AuthContext'
 import logo from '../../assets/images/logo.png'
-import { useAuth } from '../../hooks'
 
 export default function Navbar() {
   const { count } = useCart()
   const navigate = useNavigate()
   
-  // 🎣 Hook personalizado useAuth
-  const { user: usuario, logout, isAdmin } = useAuth()
+  // Obtener usuario y funciones del contexto de autenticación
+  const { usuario, logout, esAdministrador } = useAuth()
+  const isAdmin = esAdministrador()
 
   //  Cerrar sesión
   const handleLogout = () => {
@@ -73,7 +74,7 @@ export default function Navbar() {
                 <span className="text-white-50 small me-2">
                   Hola,{' '}
                   <strong className="text-white">{usuario.nombre}</strong>{' '}
-                  {usuario.rol === 'admin' && '(Admin)'}
+                  {usuario.rol === 'ADMIN' && '(Admin)'}
                 </span>
                 <button className="btn btn-outline-light" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket me-1"></i> Cerrar sesión

@@ -1,17 +1,27 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { registrarUsuario } from '../../services/usuarioService'
 
 export default function Registro() {
-  const [formData, setFormData] = useState({ nombre: '', correo: '', password: '' })
+  const [formData, setFormData] = useState({ 
+    nombre: '', 
+    apellido: '',
+    email: '', 
+    password: '',
+    direccion: '',
+    telefono: ''
+  })
   const [validated, setValidated] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
 
@@ -21,19 +31,31 @@ export default function Registro() {
       return
     }
 
-    // 🔹 Simulación de registro exitoso (rol cliente)
-    const nuevoUsuario = {
-      nombre: formData.nombre.trim(),
-      email: formData.correo.trim(),
-      password: formData.password.trim(),
-      rol: 'cliente'
+    setLoading(true)
+    setError('')
+
+    try {
+      // Registrar usuario en el microservicio
+      await registrarUsuario({
+        nombre: formData.nombre.trim(),
+        apellido: formData.apellido.trim(),
+        email: formData.email.trim(),
+        password: formData.password.trim(),
+        direccion: formData.direccion.trim(),
+        telefono: formData.telefono.trim(),
+        rol: 'CLIENTE'
+      })
+
+      setSuccess(true)
+      
+      // Redirigir al login después de 2 segundos
+      setTimeout(() => navigate('/login'), 2000)
+    } catch (err) {
+      console.error('Error en registro:', err)
+      setError(err.message || 'Error al registrar usuario. Intenta nuevamente.')
+    } finally {
+      setLoading(false)
     }
-
-    localStorage.setItem('usuario', JSON.stringify(nuevoUsuario))
-    setSuccess(true)
-
-    // Redirigir al login después de 2 segundos
-    setTimeout(() => navigate('/login'), 2000)
   }
 
   return (
@@ -69,16 +91,56 @@ export default function Registro() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Correo</label>
+          <label className="form-label">Apellido</label>
+          <input
+            type="text"
+            name="apellido"
+            className="form-control"
+            value={formData.apellido}
+            onChange={handleChange}
+            required
+          />
+          <div className="invalid-feedback">Por favor, ingresa tu apellido.</div>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Correo Electrónico</label>
           <input
             type="email"
-            name="correo"
+            name="email"
             className="form-control"
-            value={formData.correo}
+            value={formData.email}
             onChange={handleChange}
             required
           />
           <div className="invalid-feedback">Ingresa un correo válido.</div>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Teléfono</label>
+          <input
+            type="tel"
+            name="telefono"
+            className="form-control"
+            value={formData.telefono}
+            onChange={handleChange}
+            required
+            pattern="[0-9]{9,15}"
+          />
+          <div className="invalid-feedback">Ingresa un teléfono válido (9-15 dígitos).</div>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Dirección</label>
+          <input
+            type="text"
+            name="direccion"
+            className="form-control"
+            value={formData.direccion}
+            onChange={handleChange}
+            required
+          />
+          <div className="invalid-feedback">Por favor, ingresa tu dirección.</div>
         </div>
 
         <div className="mb-3">
@@ -90,12 +152,18 @@ export default function Registro() {
             value={formData.password}
             onChange={handleChange}
             required
-            minLength="4"
+            minLength="6"
           />
           <div className="invalid-feedback">
-            La contraseña debe tener al menos 4 caracteres.
+            La contraseña debe tener al menos 6 caracteres.
           </div>
         </div>
+
+        {error && (
+          <div className="alert alert-danger small py-2 text-center">
+            {error}
+          </div>
+        )}
 
         {success && (
           <div className="alert alert-success small py-2 text-center">
@@ -103,8 +171,8 @@ export default function Registro() {
           </div>
         )}
 
-        <button type="submit" className="btn btn-success w-100">
-          Crear cuenta
+        <button type="submit" className="btn btn-success w-100" disabled={loading}>
+          {loading ? 'Registrando...' : 'Crear cuenta'}
         </button>
 
         <p className="text-center mt-3 small">

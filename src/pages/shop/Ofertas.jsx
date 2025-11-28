@@ -1,21 +1,45 @@
 // src/pages/shop/Ofertas.jsx
-import React from "react";
-import { productos } from "../../data/data";
+import React, { useState, useEffect } from "react";
+import { obtenerTodosProductos } from "../../services/productosService";
 import { useCart } from "../../contexts/CartContext.jsx";
 
 export default function Ofertas() {
   const { addItem } = useCart();
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filtrar solo productos marcados con oferta
-  const productosEnOferta = productos.filter((p) => p.oferta === true);
+  useEffect(() => {
+    const cargarProductos = async () => {
+      try {
+        const data = await obtenerTodosProductos();
+        setProductos(data);
+      } catch (err) {
+        console.error('Error al cargar productos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    cargarProductos();
+  }, []);
+
+  // TODO: Agregar campo 'oferta' al modelo Producto en backend
+  // Por ahora mostramos todos los productos
+  const productosEnOferta = productos;
 
   return (
     <div className="container py-4">
       <h2 className="text-center mb-4 text-success fw-bold">
-        🏷️ Productos en Oferta
+        🏷️ Productos Destacados
       </h2>
 
-      {productosEnOferta.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+      ) : productosEnOferta.length > 0 ? (
         <div className="row g-4">
           {productosEnOferta.map((producto) => (
             <div key={producto.id} className="col-12 col-sm-6 col-md-4">
