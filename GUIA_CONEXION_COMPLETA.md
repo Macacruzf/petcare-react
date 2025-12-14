@@ -1,6 +1,6 @@
 # 🔗 Guía de Conexión Completa - React + Microservicios
 
-Esta guía explica cómo conectar correctamente tu frontend React con los microservicios de Spring Boot.
+Esta guía explica cómo conectar correctamente tu frontend React (Vite) con los microservicios de Spring Boot del sistema PetCare, incluyendo el flujo completo de autenticación JWT, gestión de carrito y creación de pedidos.
 
 ---
 
@@ -54,110 +54,300 @@ Esta guía explica cómo conectar correctamente tu frontend React con los micros
 ## 🚀 Paso 1: Iniciar Todo en el Orden Correcto
 
 ### 1.1 Iniciar MySQL
+
+Asegúrate de que MySQL esté corriendo en tu sistema:
+
 ```bash
-# Windows
+# Windows (PowerShell como Administrador)
 net start MySQL80
+# O: net start MySQL
 
 # Mac
 mysql.server start
+# O: brew services start mysql
 
 # Linux
 sudo systemctl start mysql
+# O: sudo service mysql start
 ```
 
-### 1.2 Iniciar Microservicios (4 terminales)
-
+**Verificar que MySQL está corriendo:**
 ```bash
-# Terminal 1 - Usuario (8081)
+mysql -u root -p
+# Ingresa tu contraseña
+# Si ves: mysql> significa que está corriendo correctamente
+```
+
+### 1.2 Verificar Bases de Datos
+
+Asegúrate de que las 4 bases de datos estén creadas:
+
+```sql
+SHOW DATABASES;
+-- Deberías ver:
+-- react_usuario
+-- react_producto
+-- react_carrito
+-- react_pedido
+```
+
+Si no existen, créalas:
+```sql
+CREATE DATABASE react_usuario;
+CREATE DATABASE react_producto;
+CREATE DATABASE react_carrito;
+CREATE DATABASE react_pedido;
+```
+
+### 1.3 Iniciar Microservicios (4 terminales separadas)
+
+**⚠️ IMPORTANTE**: Inicia en este orden para evitar errores de dependencias.
+
+#### Terminal 1 - Usuario Service (puerto 8081)
+```bash
 cd microservicio_react_petcare/usuario/usuario
-./mvnw spring-boot:run
-
-# Terminal 2 - Productos (8082)
-cd microservicio_react_petcare/productos/productos
-./mvnw spring-boot:run
-
-# Terminal 3 - Carrito (8083)
-cd microservicio_react_petcare/carrito/carrito
-./mvnw spring-boot:run
-
-# Terminal 4 - Pedidos (8084)
-cd microservicio_react_petcare/pedidos/pedidos
+# Windows
+mvnw.cmd spring-boot:run
+# Mac/Linux
 ./mvnw spring-boot:run
 ```
+✅ Espera hasta ver: `Started UsuarioApplication in X.XXX seconds`
 
-**Espera a que cada uno muestre**: `Started XxxApplication in X.XXX seconds`
+#### Terminal 2 - Productos Service (puerto 8082)
+```bash
+cd microservicio_react_petcare/productos/productos
+# Windows
+mvnw.cmd spring-boot:run
+# Mac/Linux
+./mvnw spring-boot:run
+```
+✅ Espera hasta ver: `Started ProductosApplication in X.XXX seconds`
 
-### 1.3 Iniciar React (terminal 5)
+#### Terminal 3 - Carrito Service (puerto 8083)
+```bash
+cd microservicio_react_petcare/carrito/carrito
+# Windows
+mvnw.cmd spring-boot:run
+# Mac/Linux
+./mvnw spring-boot:run
+```
+✅ Espera hasta ver: `Started CarritoApplication in X.XXX seconds`
+
+#### Terminal 4 - Pedidos Service (puerto 8084)
+```bash
+cd microservicio_react_petcare/pedidos/pedidos
+# Windows
+mvnw.cmd spring-boot:run
+# Mac/Linux
+./mvnw spring-boot:run
+```
+✅ Espera hasta ver: `Started PedidosApplication in X.XXX seconds`
+
+### 1.4 Iniciar React Frontend (terminal 5)
 
 ```bash
-# Terminal 5 - React Frontend
+# Terminal 5 - React Frontend (puerto 5173)
+cd petcare-react
 npm run dev
 ```
+
+✅ Espera hasta ver:
+```
+  VITE v5.4.8  ready in 523 ms
+  ➜  Local:   http://localhost:5173/
+```
+
+### 📋 Checklist de Inicio
+
+Verifica que todo esté corriendo:
+
+- [ ] ✅ MySQL en puerto 3306
+- [ ] ✅ Usuario Service en puerto 8081
+- [ ] ✅ Productos Service en puerto 8082
+- [ ] ✅ Carrito Service en puerto 8083
+- [ ] ✅ Pedidos Service en puerto 8084
+- [ ] ✅ React Frontend en puerto 5173
 
 ---
 
 ## ✅ Paso 2: Verificar la Conexión
 
-### 2.1 Verificar Microservicios
+### 2.1 Verificar Microservicios con Health Endpoint
 
-Abre en tu navegador (o usa curl):
+Cada microservicio tiene un endpoint de salud para verificar su estado.
+
+**Opción A - Desde el navegador:**
+
+Abre estas URLs en tu navegador:
+- http://localhost:8081/actuator/health → Usuario Service
+- http://localhost:8082/actuator/health → Productos Service
+- http://localhost:8083/actuator/health → Carrito Service
+- http://localhost:8084/actuator/health → Pedidos Service
+
+**Respuesta esperada:**
+```json
+{"status":"UP"}
+```
+
+**Opción B - Desde PowerShell/CMD:**
 
 ```bash
-# Verificar que todos responden
+# Verificar todos los servicios
 curl http://localhost:8081/actuator/health
 curl http://localhost:8082/actuator/health
 curl http://localhost:8083/actuator/health
 curl http://localhost:8084/actuator/health
 ```
 
-**Respuesta esperada**: `{"status":"UP"}`
+**Si alguno responde con error:**
+- ❌ `Could not connect` → El servicio no está corriendo
+- ❌ `Connection refused` → El puerto no está escuchando
+- ✅ `{"status":"UP"}` → Todo correcto
 
-### 2.2 Verificar React
+### 2.2 Verificar React Frontend
 
-Abre: http://localhost:5173/
+Abre en tu navegador: **http://localhost:5173/**
 
-Deberías ver la página principal de PetCare.
+✅ **Deberías ver:**
+- Logo de PetCare
+- Navbar con menú de navegación
+- Página principal con productos destacados
+- Footer con información de contacto
 
-### 2.3 Verificar Swagger (Opcional)
+❌ **Si no carga:**
+- Verifica que `npm run dev` esté corriendo
+- Revisa la consola del terminal por errores
+- Verifica que el puerto 5173 no esté ocupado
 
-- http://localhost:8081/swagger-ui/
-- http://localhost:8082/swagger-ui/
-- http://localhost:8083/swagger-ui/
-- http://localhost:8084/swagger-ui/
+### 2.3 Verificar Documentación Swagger (Opcional)
+
+Spring Boot incluye Swagger UI para probar los endpoints:
+
+- **Usuario Service**: http://localhost:8081/swagger-ui/index.html
+- **Productos Service**: http://localhost:8082/swagger-ui/index.html
+- **Carrito Service**: http://localhost:8083/swagger-ui/index.html
+- **Pedidos Service**: http://localhost:8084/swagger-ui/index.html
+
+Aquí puedes:
+- 📖 Ver todos los endpoints disponibles
+- 🧪 Probar peticiones directamente desde el navegador
+- 📝 Ver los modelos de datos (DTOs)
+
+### 2.4 Verificar Conectividad desde React
+
+Abre DevTools en el navegador (F12) y ejecuta en la consola:
+
+```javascript
+// Test rápido de conectividad
+fetch('http://localhost:8082/productos')
+  .then(res => res.json())
+  .then(data => console.log('✅ Productos cargados:', data.length))
+  .catch(err => console.error('❌ Error de conexión:', err))
+```
+
+✅ **Si ves**: `✅ Productos cargados: 10` → Todo está conectado correctamente
+
+❌ **Si ves error**: Revisa que los microservicios estén corriendo
 
 ---
 
-## 🔐 Paso 3: Flujo de Autenticación Completo
+## 🔐 Paso 3: Flujo de Autenticación Completo (JWT)
 
 ### 3.1 Registro de Usuario
 
-**Frontend (React)**:
-```javascript
-// src/pages/auth/Registro.jsx
-import { registrarUsuario } from '../../services/usuarioService'
+#### Frontend (React) - `src/pages/auth/Registro.jsx`
 
-const handleRegistro = async () => {
-  try {
-    await registrarUsuario({
-      nombre: 'Juan',
-      apellido: 'Pérez',
-      email: 'juan@ejemplo.com',
-      password: 'password123',
-      direccion: 'Calle 123',
-      telefono: '123456789',
+```javascript
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { registrarUsuario } from '../../services/usuarioService'
+import { useForm } from '../../hooks'
+
+export default function Registro() {
+  const navigate = useNavigate()
+
+  const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
+    {
+      nombre: '',
+      apellido: '',
+      email: '',
+      password: '',
+      direccion: '',
+      telefono: '',
       rol: 'CLIENTE'
-    })
-    alert('Registro exitoso')
-  } catch (error) {
-    console.error(error)
-  }
+    },
+    async (formValues) => {
+      // 🔹 Llamar al servicio de registro
+      await registrarUsuario(formValues)
+      
+      // ✅ Registro exitoso
+      alert('¡Registro exitoso! Ahora puedes iniciar sesión')
+      navigate('/login')
+    }
+  )
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Formulario de registro */}
+      <input name="nombre" value={values.nombre} onChange={handleChange} required />
+      <input name="email" type="email" value={values.email} onChange={handleChange} required />
+      <input name="password" type="password" value={values.password} onChange={handleChange} required />
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Registrando...' : 'Registrarse'}
+      </button>
+    </form>
+  )
 }
 ```
 
-**Backend responde**:
-- ✅ POST `http://localhost:8081/usuarios/registro`
-- Guarda usuario en `react_usuario.usuario`
-- Retorna usuario creado (sin password)
+#### Servicio - `src/services/usuarioService.ts`
+
+```typescript
+import { apiClient } from './apiClient'
+
+export const registrarUsuario = async (userData: any) => {
+  const response = await apiClient.post('/usuarios/registro', userData)
+  return response.data
+}
+```
+
+#### Backend responde (Spring Boot)
+
+**Endpoint**: POST `http://localhost:8081/usuarios/registro`
+
+**Request Body**:
+```json
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan@ejemplo.com",
+  "password": "password123",
+  "direccion": "Calle Falsa 123",
+  "telefono": "123456789",
+  "rol": "CLIENTE"
+}
+```
+
+**Response** (201 Created):
+```json
+{
+  "id": 1,
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan@ejemplo.com",
+  "direccion": "Calle Falsa 123",
+  "telefono": "123456789",
+  "rol": "CLIENTE"
+}
+```
+
+**⚠️ Nota**: El password NO se retorna por seguridad.
+
+**¿Qué hace el backend?**
+1. ✅ Valida que el email no esté registrado
+2. ✅ Encripta el password con BCrypt
+3. ✅ Guarda el usuario en `react_usuario.usuario`
+4. ✅ Retorna el usuario creado (sin password)
 
 ### 3.2 Login
 
