@@ -8,6 +8,7 @@ import { useForm } from '../../hooks'
 
 export default function Login() {
   const [validated, setValidated] = useState(false)
+  const [loginError, setLoginError] = useState(null)
   const navigate = useNavigate()
   const { login } = useAuth()
 
@@ -15,22 +16,30 @@ export default function Login() {
   const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
     { correo: '', password: '' },
     async (formValues) => {
-      // Llamar al microservicio de login
-      const response = await loginUsuario({
-        email: formValues.correo.trim(),
-        password: formValues.password.trim()
-      })
+      try {
+        setLoginError(null)
+        // Llamar al microservicio de login
+        const response = await loginUsuario({
+          email: formValues.correo.trim(),
+          username: formValues.correo.trim(), // Enviar también como username por si el backend lo requiere
+          password: formValues.password.trim()
+        })
 
-      // Actualizar AuthContext con los datos del usuario
-      login(response)
+        // Actualizar AuthContext con los datos del usuario
+        login(response)
 
-      console.log('Login exitoso:', response)
+        console.log('Login exitoso:', response)
 
-      // Redirigir según el rol
-      if (response.rol === 'ADMIN') {
-        navigate('/admin')
-      } else {
-        navigate('/')
+        // Redirigir según el rol (soportando rol o role)
+        const rol = response.rol || response.role
+        if (rol === 'ADMIN') {
+          navigate('/admin')
+        } else {
+          navigate('/')
+        }
+      } catch (error) {
+        console.error('Error login:', error)
+        setLoginError(error.message || 'Credenciales incorrectas o error de conexión.')
       }
     }
   )
@@ -103,6 +112,12 @@ export default function Login() {
         {errors.general && (
           <div className="alert alert-danger small py-2 text-center">
             {errors.general}
+          </div>
+        )}
+
+        {loginError && (
+          <div className="alert alert-danger small py-2 text-center">
+            {loginError}
           </div>
         )}
 

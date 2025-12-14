@@ -6,7 +6,7 @@ import { useCart } from "../../contexts/CartContext.jsx";
 import { useToggle } from "../../hooks";
 
 export default function ProductDetail() {
-  const { id } = useParams(); // 🆔 Obtiene el ID del producto desde la URL
+  const { id } = useParams(); //  Obtiene el ID del producto desde la URL
   const { addItem } = useCart();
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);

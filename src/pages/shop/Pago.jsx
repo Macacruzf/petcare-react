@@ -46,7 +46,11 @@ export default function Pago() {
       const { agregarItemCarritoActual, vaciarCarritoActual } = await import('../../services/carritoService')
       
       // Vaciar el carrito del backend
-      await vaciarCarritoActual()
+      try {
+        await vaciarCarritoActual()
+      } catch (err) {
+        console.warn('Advertencia: No se pudo vaciar el carrito remoto (posiblemente no existía). Continuando...', err)
+      }
       
       // Agregar cada item del localStorage al backend
       for (const item of items) {
@@ -54,7 +58,7 @@ export default function Pago() {
       }
 
       // Crear pedido desde el carrito del usuario en la base de datos
-      await crearPedidoActual()
+      await crearPedidoActual(formData)
       
       // Limpiar carrito local y navegar
       clearCart()

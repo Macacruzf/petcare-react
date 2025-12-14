@@ -5,21 +5,19 @@ export default function ProductCard({ product }) {
   const { addItem } = useCart();
 
   // Formatear precio según el formato chileno
-  const formattedPrice = product.precio.toLocaleString('es-CL');
+  const formattedPrice = (product.precio || 0).toLocaleString('es-CL');
 
   return (
     <div className="col">
       <div className="card h-100 shadow-sm text-center">
         {/* Imagen del producto */}
         <div className="p-3">
-          {product.imagen && (
-            <img
-              src={product.imagen}
-              className="card-img-top img-fluid"
-              alt={product.nombre}
-              style={{ maxHeight: '180px', objectFit: 'contain' }}
-            />
-          )}
+          <img
+            src={product.imagen}
+            className="card-img-top img-fluid"
+            alt={product.nombre}
+            style={{ maxHeight: '180px', objectFit: 'contain' }}
+          />
         </div>
 
         {/* Contenido de la tarjeta */}

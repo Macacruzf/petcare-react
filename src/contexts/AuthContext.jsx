@@ -23,13 +23,23 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData) => {
-    // userData viene del backend con: userId, nombre, apellido, email, rol
+    // Normalizar datos: el backend puede devolver id o userId, rol o role
+    const id = userData.id || userData.userId;
+    const nombre = userData.nombre || userData.name;
+    const rol = userData.rol || userData.role;
+
     setUsuario({
-      id: userData.userId,
-      nombre: userData.nombre,
+      id,
+      nombre,
       email: userData.email,
-      rol: userData.rol
+      rol
     });
+
+    // GUARDAR EN LOCALSTORAGE PARA PERSISTENCIA Y PARA OTROS COMPONENTES (Ej: Pago.jsx)
+    localStorage.setItem("userId", id);
+    localStorage.setItem("userName", nombre);
+    localStorage.setItem("userRole", rol);
+
     return true;
   };
 

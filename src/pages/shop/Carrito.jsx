@@ -1,6 +1,5 @@
 import { useCart } from '../../contexts/CartContext.jsx'
 import { Link } from 'react-router-dom'
-import placeholder from '../../assets/images/logo.png'
 
 export default function Carrito() {
   const { items, removeItem, incrementItem, decrementItem, clearCart, formattedTotal } = useCart();
@@ -38,7 +37,7 @@ export default function Carrito() {
               <tr key={i.id}>
                 <td style={{ width: '100px' }}>
                   <img
-                    src={i.imagen ? i.imagen : placeholder}
+                    src={i.imagen}
                     alt={i.nombre}
                     className="img-fluid rounded shadow-sm"
                     style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'cover' }}

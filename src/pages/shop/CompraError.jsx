@@ -21,7 +21,7 @@ export default function CompraError() {
         />
 
         <div className="d-flex justify-content-center gap-3">
-          <Link to="/checkout" className="btn btn-outline-danger">
+          <Link to="/pago" className="btn btn-outline-danger">
             Intentar de nuevo
           </Link>
           <Link to="/" className="btn btn-success">
