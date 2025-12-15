@@ -11,7 +11,7 @@ export interface UsuarioDto {
   nombre: string
   apellido: string
   email: string
-  password?: string // No se devuelve en respuestas, solo se envía al crear/actualizar
+  password?: string
   direccion: string
   telefono: string
   rol?: 'ADMIN' | 'CLIENTE'
@@ -28,6 +28,7 @@ export interface LoginResponse {
   apellido: string
   email: string
   rol: string
+  token: string // ✅ NECESARIO PARA JWT
 }
 
 // ==================== PRODUCTOS SERVICE ====================
@@ -82,8 +83,8 @@ export interface PedidoDto {
   usuarioId: number
   nombreUsuario?: string
   emailUsuario?: string
-  items?: PedidoItemDto[]  // Opcional para compatibilidad
-  detalles?: PedidoItemDto[]  // Campo que realmente devuelve el backend
+  items?: PedidoItemDto[]
+  detalles?: PedidoItemDto[]
   total: number
   estado: 'PENDIENTE' | 'CONFIRMADO' | 'ENVIADO' | 'ENTREGADO' | 'CANCELADO' | 'POR_ENTREGAR'
   fechaCreacion?: string

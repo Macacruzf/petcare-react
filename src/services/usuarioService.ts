@@ -1,9 +1,6 @@
-// src/services/usuarioService.ts
-
 /**
  * Servicio para interactuar con el microservicio de Usuarios
  * Puerto: 8081
- * Endpoints implementados según UsuarioController.java
  */
 
 import { buildApiUrl, fetchApi } from './apiClient'
@@ -11,10 +8,10 @@ import { UsuarioDto, LoginRequest, LoginResponse } from '../Types/ApiTypes'
 
 const SERVICE = 'USUARIO'
 
-/**
- * Registra un nuevo usuario
- * POST /usuarios/registro
- */
+// ======================================================
+// REGISTRO
+// POST /usuarios/registro
+// ======================================================
 export const registrarUsuario = async (
   usuario: UsuarioDto
 ): Promise<UsuarioDto> => {
@@ -25,62 +22,61 @@ export const registrarUsuario = async (
   })
 }
 
-/**
- * Inicia sesión (sin JWT, solo validación por roles)
- * POST /usuarios/login
- */
+// ======================================================
+// LOGIN
+// POST /usuarios/login
+// ======================================================
 export const loginUsuario = async (
   credentials: LoginRequest
 ): Promise<LoginResponse> => {
   const url = buildApiUrl(SERVICE, '/usuarios/login')
+
   const response = await fetchApi<LoginResponse>(url, {
     method: 'POST',
     body: JSON.stringify(credentials),
   })
 
-  // Guardar solo datos del usuario (sin token)
+  // 🔐 Guardar sesión
   localStorage.setItem('userId', response.userId.toString())
   localStorage.setItem('userRole', response.rol)
   localStorage.setItem('userName', response.nombre)
+  localStorage.setItem('token', response.token) // ✅ JWT
 
   return response
 }
 
-/**
- * Cierra sesión (limpia localStorage)
- */
+// ======================================================
+// LOGOUT
+// ======================================================
 export const logoutUsuario = (): void => {
   localStorage.removeItem('userId')
   localStorage.removeItem('userRole')
   localStorage.removeItem('userName')
+  localStorage.removeItem('token')
 }
 
-/**
- * Obtiene un usuario por ID
- * GET /usuarios/{id}
- */
+// ======================================================
+// OBTENER USUARIO POR ID
+// GET /usuarios/{id}
+// ======================================================
 export const obtenerUsuarioPorId = async (id: number): Promise<UsuarioDto> => {
   const url = buildApiUrl(SERVICE, `/usuarios/${id}`)
-  return fetchApi<UsuarioDto>(url, {
-    method: 'GET',
-  })
+  return fetchApi<UsuarioDto>(url, { method: 'GET' })
 }
 
-/**
- * Obtiene todos los usuarios (solo ADMIN)
- * GET /usuarios
- */
+// ======================================================
+// LISTAR USUARIOS
+// GET /usuarios
+// ======================================================
 export const obtenerTodosUsuarios = async (): Promise<UsuarioDto[]> => {
   const url = buildApiUrl(SERVICE, '/usuarios')
-  return fetchApi<UsuarioDto[]>(url, {
-    method: 'GET',
-  })
+  return fetchApi<UsuarioDto[]>(url, { method: 'GET' })
 }
 
-/**
- * Actualiza un usuario (solo ADMIN)
- * PUT /usuarios/{id}
- */
+// ======================================================
+// ACTUALIZAR USUARIO
+// PUT /usuarios/{id}
+// ======================================================
 export const actualizarUsuario = async (
   id: number,
   usuario: UsuarioDto
@@ -92,31 +88,28 @@ export const actualizarUsuario = async (
   })
 }
 
-/**
- * Verifica si el usuario actual es administrador
- */
+// ======================================================
+// UTILIDADES
+// ======================================================
 export const esAdministrador = (): boolean => {
   return localStorage.getItem('userRole') === 'ADMIN'
 }
 
-/**
- * Obtiene el ID del usuario actual
- */
 export const obtenerUsuarioIdActual = (): number | null => {
   const userId = localStorage.getItem('userId')
   return userId ? parseInt(userId) : null
 }
 
-/**
- * Cambia la contraseña de un usuario
- * PUT /usuarios/{id}/cambiar-password
- */
+// ======================================================
+// CAMBIAR CONTRASEÑA (JWT)
+// PUT /usuarios/cambiar-password
+// ======================================================
 export const cambiarPassword = async (
-  id: number,
   passwordActual: string,
   passwordNueva: string
 ): Promise<void> => {
-  const url = buildApiUrl(SERVICE, `/usuarios/${id}/cambiar-password`)
+  const url = buildApiUrl(SERVICE, '/usuarios/cambiar-password')
+
   return fetchApi<void>(url, {
     method: 'PUT',
     body: JSON.stringify({
