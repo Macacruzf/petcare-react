@@ -31,8 +31,19 @@ export function CartProvider({ children }) {
       const idx = prev.findIndex(i => i.id === product.id);
       if (idx >= 0) {
         const copy = [...prev];
-        copy[idx] = { ...copy[idx], qty: copy[idx].qty + qty };
+        const nuevaCantidad = copy[idx].qty + qty;
+        // Validar que no se exceda el stock disponible
+        if (nuevaCantidad > product.stock) {
+          console.warn(`No se puede agregar más. Stock disponible: ${product.stock}`);
+          return prev;
+        }
+        copy[idx] = { ...copy[idx], qty: nuevaCantidad };
         return copy;
+      }
+      // Al agregar por primera vez, validar el stock
+      if (qty > product.stock) {
+        console.warn(`No se puede agregar más. Stock disponible: ${product.stock}`);
+        return prev;
       }
       return [...prev, { ...product, qty }];
     });
@@ -45,9 +56,17 @@ export function CartProvider({ children }) {
 
   // Incrementar cantidad de un producto
   const incrementItem = (id) => {
-    setItems(prev => prev.map(i => 
-      i.id === id ? { ...i, qty: i.qty + 1 } : i
-    ));
+    setItems(prev => prev.map(i => {
+      if (i.id === id) {
+        // Validar que no se exceda el stock disponible
+        if (i.qty >= i.stock) {
+          console.warn(`Stock máximo alcanzado: ${i.stock} unidades`);
+          return i;
+        }
+        return { ...i, qty: i.qty + 1 };
+      }
+      return i;
+    }));
   };
 
   // Decrementar cantidad de un producto

@@ -20,6 +20,7 @@ import MisPedidos from './pages/shop/MisPedidos.jsx'
 // Auth
 import Login from './pages/auth/Login.jsx'
 import Registro from './pages/auth/Registro.jsx'
+import Perfil from './pages/auth/Perfil.jsx'
 
 // 📰Blog
 import Blog from './pages/blog/Blog.jsx'
@@ -42,10 +43,11 @@ export default function App() {
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/perfil" element={<Perfil />} />
 
           {/* 🛍️ Rutas de e-commerce */}
           <Route path="/productos" element={<Productos />} />
-          <Route path="/producto/:id" element={<ProductDetail />} />
+          <Route path="/productos/:id" element={<ProductDetail />} />
           <Route path="/carrito" element={<Carrito />} />
           <Route path="/pago" element={<Pago />} />
           <Route path="/gracias" element={<Gracias />} />

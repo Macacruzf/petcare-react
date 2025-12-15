@@ -30,7 +30,7 @@ export default function ProductCard({ product }) {
 
           <div className="d-flex justify-content-center gap-2 mt-auto">
             {/* Enlace al detalle del producto (si lo implementas después) */}
-            <Link className="btn btn-sm btn-outline-success" to={`/producto/${product.id}`}>
+            <Link className="btn btn-sm btn-outline-success" to={`/productos/${product.id}`}>
               Ver Detalle
             </Link>
 

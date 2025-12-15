@@ -73,7 +73,6 @@ export default function AdminRoutes() {
         <Route path="productos/:id" element={<FormProducto />} />
         <Route path="usuarios" element={<AdminUsuarios />} />
         <Route path="usuarios/nuevo" element={<FormUsuario />} />
-        <Route path="usuarios/:id" element={<FormUsuario />} />
         <Route path="pedidos" element={<AdminPedidos />} />
       </Routes>
     </div>

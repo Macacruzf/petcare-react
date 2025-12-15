@@ -1,13 +1,24 @@
 // src/pages/shop/Productos.jsx
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { obtenerTodosProductos } from "../../services/productosService";
 import ProductCard from "../../components/common/ProductCard.jsx";
 
 export default function Productos() {
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
+  const location = useLocation();
+  const categoriaInicial = location.state?.categoriaInicial || "Todos";
+  
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(categoriaInicial);
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // 🔹 Actualizar categoría seleccionada cuando cambia el state de navegación
+  useEffect(() => {
+    if (location.state?.categoriaInicial) {
+      setCategoriaSeleccionada(location.state.categoriaInicial);
+    }
+  }, [location.state]);
 
   // 🔹 Cargar productos desde el microservicio
   useEffect(() => {

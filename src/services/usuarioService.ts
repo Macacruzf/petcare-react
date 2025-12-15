@@ -107,6 +107,25 @@ export const obtenerUsuarioIdActual = (): number | null => {
   return userId ? parseInt(userId) : null
 }
 
+/**
+ * Cambia la contraseña de un usuario
+ * PUT /usuarios/{id}/cambiar-password
+ */
+export const cambiarPassword = async (
+  id: number,
+  passwordActual: string,
+  passwordNueva: string
+): Promise<void> => {
+  const url = buildApiUrl(SERVICE, `/usuarios/${id}/cambiar-password`)
+  return fetchApi<void>(url, {
+    method: 'PUT',
+    body: JSON.stringify({
+      passwordActual,
+      passwordNueva,
+    }),
+  })
+}
+
 export default {
   registrarUsuario,
   loginUsuario,
@@ -116,4 +135,5 @@ export default {
   actualizarUsuario,
   esAdministrador,
   obtenerUsuarioIdActual,
+  cambiarPassword,
 }

@@ -5,11 +5,6 @@ import perritovacu from '../../assets/images/perritovacu.jpg'
 export default function BlogVacuna() {
   return (
     <div className="container py-4 container-narrow">
-      {/* Botón de regreso al índice del blog */}
-      <Link to="/blog" className="btn btn-outline-success btn-sm mb-4">
-        &larr; Volver al Blog
-      </Link>
-
       <h1 className="mb-4 text-success fw-bold">
         Calendario de Vacunas: Protege a tu Mascota
       </h1>

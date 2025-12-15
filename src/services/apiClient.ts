@@ -62,12 +62,19 @@ export const fetchApi = async <T>(
       throw new Error(error.message || 'Error en la petición')
     }
 
-    // Si la respuesta es 204 No Content, retornar null
-    if (response.status === 204) {
+    // Si la respuesta es 204 No Content o no tiene contenido, retornar null
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
       return null as T
     }
 
-    return await response.json()
+    // Verificar si la respuesta tiene contenido antes de parsear
+    const contentType = response.headers.get('content-type')
+    if (contentType && contentType.includes('application/json')) {
+      const text = await response.text()
+      return text ? JSON.parse(text) : null as T
+    }
+
+    return null as T
   } catch (error) {
     console.error('Error en fetchApi:', error)
     throw error

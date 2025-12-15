@@ -1,5 +1,5 @@
 // src/pages/admin/AdminUsuarios.jsx
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { obtenerTodosUsuarios } from '../../services/usuarioService'
 
@@ -7,7 +7,6 @@ export default function AdminUsuarios() {
   const [usuarios, setUsuarios] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
 
   // 🔹 Cargar usuarios desde el microservicio
   useEffect(() => {
@@ -26,14 +25,6 @@ export default function AdminUsuarios() {
     
     cargarUsuarios()
   }, [])
-
-  // 🔹 Eliminar usuario
-  const eliminarUsuario = (id) => {
-    if (confirm('¿Deseas eliminar este usuario?')) {
-      // TODO: Implementar eliminación con microservicio
-      alert('Funcionalidad de eliminación pendiente de implementar')
-    }
-  }
 
   return (
     <div className="container py-3">
@@ -64,7 +55,6 @@ export default function AdminUsuarios() {
                 <th>Nombre</th>
                 <th>Correo</th>
                 <th>Rol</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -81,22 +71,6 @@ export default function AdminUsuarios() {
                     >
                       {u.rol}
                     </span>
-                  </td>
-                  <td className="text-end">
-                    <div className="btn-group">
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => eliminarUsuario(u.id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-secondary"
-                        onClick={() => navigate(String(u.id))}
-                      >
-                        <i className="fa-solid fa-pen"></i>
-                      </button>
-                    </div>
                   </td>
                 </tr>
               ))}

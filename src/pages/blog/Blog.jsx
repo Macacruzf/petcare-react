@@ -5,11 +5,6 @@ import comiendo from '../../assets/images/comiendo.jpg'
 export default function BlogComida() {
   return (
     <div className="container py-4 container-narrow">
-      {/*  Botón de regreso al índice del blog */}
-      <Link to="/blog" className="btn btn-outline-success btn-sm mb-4">
-        &larr; Volver al Blog
-      </Link>
-
       {/*  Contenido principal del artículo */}
       <h1 className="mb-4 text-success fw-bold">
         Nutrición para una Vida Saludable
@@ -45,7 +40,11 @@ export default function BlogComida() {
       {/* CTA */}
       <div className="text-center mt-5 p-3 border-top">
         <p className="fw-bold">🐶 Explora nuestros alimentos premium recomendados.</p>
-        <Link to="/productos" className="btn btn-success">
+        <Link 
+          to="/productos" 
+          state={{ categoriaInicial: 'Alimentos' }}
+          className="btn btn-success"
+        >
           Ver Productos de Nutrición
         </Link>
       </div>

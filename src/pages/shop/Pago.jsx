@@ -42,30 +42,56 @@ export default function Pago() {
     setError(null)
 
     try {
+      // Verificar que el usuario esté autenticado
+      const userId = localStorage.getItem('userId')
+      if (!userId) {
+        setError('Debes iniciar sesión para completar la compra')
+        setLoading(false)
+        return
+      }
+
+      console.log('🛒 Iniciando proceso de pago para usuario:', userId)
+      
       // Sincronizar carrito de localStorage con el backend antes de crear el pedido
       const { agregarItemCarritoActual, vaciarCarritoActual } = await import('../../services/carritoService')
       
-      // Vaciar el carrito del backend
-      try {
-        await vaciarCarritoActual()
-      } catch (err) {
-        console.warn('Advertencia: No se pudo vaciar el carrito remoto (posiblemente no existía). Continuando...', err)
-      }
+      console.log('🗑️ Vaciando carrito del backend...')
+      await vaciarCarritoActual()
       
       // Agregar cada item del localStorage al backend
+      console.log('📦 Agregando', items.length, 'items al carrito del backend...')
       for (const item of items) {
+        console.log('  ➕ Agregando:', item.nombre, 'x', item.qty)
         await agregarItemCarritoActual(item.id, item.qty)
       }
 
       // Crear pedido desde el carrito del usuario en la base de datos
-      await crearPedidoActual(formData)
+      console.log('📋 Creando pedido...')
+      const pedido = await crearPedidoActual()
+      console.log('✅ Pedido creado exitosamente:', pedido.id)
       
       // Limpiar carrito local y navegar
       clearCart()
       navigate('/gracias')
     } catch (err) {
-      console.error('Error al procesar el pago:', err)
-      setError(err.message || 'Error al procesar el pago. Intenta nuevamente.')
+      console.error('❌ Error al procesar el pago:', err)
+      
+      // Mostrar mensaje de error más específico
+      let mensajeError = 'Error al procesar el pago. Intenta nuevamente.'
+      
+      if (err.message) {
+        if (err.message.includes('Stock insuficiente')) {
+          mensajeError = err.message
+        } else if (err.message.includes('Usuario no autenticado')) {
+          mensajeError = 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.'
+        } else if (err.message.includes('carrito')) {
+          mensajeError = 'Error al sincronizar el carrito. Verifica tu conexión e intenta nuevamente.'
+        } else {
+          mensajeError = err.message
+        }
+      }
+      
+      setError(mensajeError)
       setLoading(false)
     }
 
@@ -75,7 +101,7 @@ export default function Pago() {
   if (items.length === 0) {
     return (
       <div className="container text-center py-5">
-        <h4 className="text-muted">Tu carrito está vacío 🛒</h4>
+        <h4 className="text-muted">Tu carrito está vacío </h4>
       </div>
     )
   }

@@ -77,12 +77,30 @@ export default function Navbar() {
                   {usuario.rol === 'ADMIN' && '(Admin)'}
                 </span>
                 
+                {/* Ver Perfil - Solo visible para clientes */}
+                {!isAdmin && (
+                  <NavLink className="btn btn-outline-light" to="/perfil">
+                    <i className="fa-solid fa-user me-1"></i> Ver Perfil
+                  </NavLink>
+                )}
+                
                 {/* Mis Pedidos - Solo visible para clientes */}
                 {!isAdmin && (
                   <NavLink className="btn btn-outline-light" to="/mis-pedidos">
                     <i className="fa-solid fa-box me-1"></i> Mis Pedidos
                   </NavLink>
                 )}
+                
+                {/* Carrito */}
+                <NavLink className="btn btn-light position-relative" to="/carrito">
+                  <i className="fa-solid fa-cart-shopping me-1"></i>
+                  Carrito
+                  {count > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                      {count}
+                    </span>
+                  )}
+                </NavLink>
                 
                 <button className="btn btn-outline-light" onClick={handleLogout}>
                   <i className="fa-solid fa-right-from-bracket me-1"></i> Cerrar sesión
@@ -93,17 +111,6 @@ export default function Navbar() {
                 <i className="fa-solid fa-user me-1"></i> Ingresar
               </NavLink>
             )}
-
-            {/* Carrito */}
-            <NavLink className="btn btn-light position-relative" to="/carrito">
-              <i className="fa-solid fa-cart-shopping me-1"></i>
-              Carrito
-              {count > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                  {count}
-                </span>
-              )}
-            </NavLink>
           </div>
         </div>
       </div>

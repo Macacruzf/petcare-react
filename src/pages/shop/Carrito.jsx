@@ -60,6 +60,8 @@ export default function Carrito() {
                     <button
                       className="btn btn-sm btn-outline-secondary"
                       onClick={() => incrementItem(i.id)}
+                      disabled={i.qty >= i.stock}
+                      title={i.qty >= i.stock ? `Stock máximo: ${i.stock}` : ''}
                     >
                       +
                     </button>
