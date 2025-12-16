@@ -28,7 +28,7 @@ export interface LoginResponse {
   apellido: string
   email: string
   rol: string
-  token: string // ✅ NECESARIO PARA JWT
+  token: string // NECESARIO PARA JWT
 }
 
 // ==================== PRODUCTOS SERVICE ====================

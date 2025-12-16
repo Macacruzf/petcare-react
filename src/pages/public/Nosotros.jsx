@@ -26,11 +26,11 @@ export default function Nosotros() {
           alt="Equipo PetCare"
           className="img-fluid rounded shadow-sm"
           style={{
-            maxWidth: '70%',         // 🔹 Imagen más pequeña y centrada
-            maxHeight: '220px',      // 🔹 Altura controlada
-            objectFit: 'cover',      // 🔹 Mantiene proporción
-            borderRadius: '16px',    // 🔹 Bordes suaves
-            boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)', // 💚 sombra verde suave
+            maxWidth: '70%',         // Imagen más pequeña y centrada
+            maxHeight: '220px',      // Altura controlada
+            objectFit: 'cover',      // Mantiene proporción
+            borderRadius: '16px',    // Bordes suaves
+            boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)', // sombra verde suave
             display: 'block',
             margin: '0 auto'
           }}
@@ -44,7 +44,7 @@ export default function Nosotros() {
           Por eso, trabajamos para ofrecer productos de alta calidad,
           seleccionados con amor y cuidado, asegurando que tu compañero peludo
           tenga una vida sana, plena y feliz.  
-          Nuestro compromiso es acompañarte en cada etapa de su vida 🐕🐈.
+          Nuestro compromiso es acompañarte en cada etapa de su vida.
         </p>
 
         {/*  Misión, Visión y Valores */}
@@ -78,9 +78,9 @@ export default function Nosotros() {
               <div className="card-body text-center">
                 <h5 className="card-title fw-bold text-success">Nuestros Valores</h5>
                 <ul className="list-unstyled text-muted mb-0">
-                  <li>💚 Amor y respeto por los animales</li>
-                  <li>✨ Calidad y confianza</li>
-                  <li>🤝 Atención cercana y humana</li>
+                  <li> Amor y respeto por los animales</li>
+                  <li> Calidad y confianza</li>
+                  <li> Atención cercana y humana</li>
                 </ul>
               </div>
             </div>

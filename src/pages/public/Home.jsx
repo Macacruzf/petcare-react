@@ -9,7 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [categorias, setCategorias] = useState([]);
 
-  // 🔹 Cargar categorías desde productos
+  // Cargar categorías desde productos
   useEffect(() => {
     const cargarCategorias = async () => {
       try {

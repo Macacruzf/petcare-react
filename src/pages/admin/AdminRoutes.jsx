@@ -5,13 +5,14 @@ import AdminHome from './AdminHome.jsx'
 import AdminProductos from './AdminProductos.jsx'
 import AdminUsuarios from './AdminUsuarios.jsx'
 import AdminPedidos from './AdminPedidos.jsx'
+import AdminContactos from './AdminContactos.jsx'
 import FormProducto from './FormProducto.jsx'
 import FormUsuario from './FormUsuario.jsx'
 
 export default function AdminRoutes() {
   const { usuario, esAdministrador } = useAuth()
 
-  // 🔒 Verificación de acceso
+  // Verificación de acceso
   if (!usuario) {
     // No ha iniciado sesión
     return <Navigate to="/login" />
@@ -22,7 +23,7 @@ export default function AdminRoutes() {
     return <Navigate to="/" />
   }
 
-  // ✅ Si es administrador, muestra las rutas internas
+  // Si es administrador, muestra las rutas internas
   return (
     <div className="container py-4">
       {/* 🔹 Barra de navegación interna del panel */}
@@ -63,6 +64,15 @@ export default function AdminRoutes() {
         >
           Pedidos
         </NavLink>
+
+        <NavLink
+          to="/admin/contactos"
+          className={({ isActive }) =>
+            `btn ${isActive ? 'btn-primary' : 'btn-outline-secondary'}`
+          }
+        >
+          Contactos
+        </NavLink>
       </div>
 
       {/* 🔹 Rutas internas del panel */}
@@ -74,6 +84,7 @@ export default function AdminRoutes() {
         <Route path="usuarios" element={<AdminUsuarios />} />
         <Route path="usuarios/nuevo" element={<FormUsuario />} />
         <Route path="pedidos" element={<AdminPedidos />} />
+        <Route path="contactos" element={<AdminContactos />} />
       </Routes>
     </div>
   )

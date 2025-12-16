@@ -31,12 +31,19 @@ export const buildApiUrl = (
 
 /**
  * Obtiene los headers comunes para las peticiones
- * (Sin JWT - autenticación por roles solamente)
+ * Incluye el token JWT si el usuario está autenticado
  */
 export const getAuthHeaders = (): HeadersInit => {
-  return {
+  const token = localStorage.getItem('token')
+  const headers: HeadersInit = {
     'Content-Type': 'application/json',
   }
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+  }
+  
+  return headers
 }
 
 /**

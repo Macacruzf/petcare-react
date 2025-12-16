@@ -22,7 +22,7 @@ import Login from './pages/auth/Login.jsx'
 import Registro from './pages/auth/Registro.jsx'
 import Perfil from './pages/auth/Perfil.jsx'
 
-// 📰Blog
+// Blog
 import Blog from './pages/blog/Blog.jsx'
 import BlogComida from './pages/blog/BlogComida.jsx'
 import BlogVacuna from './pages/blog/BlogVacuna.jsx'

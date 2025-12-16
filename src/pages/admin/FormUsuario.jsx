@@ -14,7 +14,7 @@ export default function FormUsuario() {
     rol: 'cliente'
   })
 
-  // 🔹 Cargar usuario si se está editando
+  // Cargar usuario si se está editando
   useEffect(() => {
     const guardados = JSON.parse(localStorage.getItem('usuarios')) || []
     if (isEdit) {
@@ -23,13 +23,13 @@ export default function FormUsuario() {
     }
   }, [id, isEdit])
 
-  // 🔹 Actualizar campos
+  // Actualizar campos
   const handleChange = (e) => {
     const { name, value } = e.target
     setUsuario({ ...usuario, [name]: value })
   }
 
-  // 🔹 Guardar cambios
+  // Guardar cambios
   const onSubmit = (e) => {
     e.preventDefault()
     const guardados = JSON.parse(localStorage.getItem('usuarios')) || []
@@ -90,15 +90,24 @@ export default function FormUsuario() {
         {/* Contraseña */}
         <div className="mb-3">
           <label className="form-label">Contraseña</label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={usuario.password}
-            onChange={handleChange}
-            required={!isEdit} // solo obligatoria si es nuevo
-            placeholder={isEdit ? '••••••••' : ''}
-          />
+          <div className="input-group">
+            <input
+              type={mostrarPassword ? "text" : "password"}
+              className="form-control"
+              name="password"
+              value={usuario.password}
+              onChange={handleChange}
+              required={!isEdit}
+              placeholder={isEdit ? '••••••••' : ''}
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setMostrarPassword(!mostrarPassword)}
+            >
+              <img src={ojo} alt="Ver contraseña" style={{ width: '20px', height: '20px', opacity: mostrarPassword ? 0.5 : 1 }} />
+            </button>
+          </div>
         </div>
 
         {/* Rol */}

@@ -9,7 +9,7 @@ export default function AdminProductos() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // 🔹 Cargar productos desde el microservicio
+  // Cargar productos desde el microservicio
   useEffect(() => {
     const cargarProductos = async () => {
       try {
@@ -27,7 +27,7 @@ export default function AdminProductos() {
     cargarProductos()
   }, [])
 
-  // 🔹 Eliminar producto
+  // Eliminar producto
   const eliminarProducto = (id) => {
     if (confirm('¿Deseas eliminar este producto?')) {
       // TODO: Implementar eliminación con microservicio
@@ -79,16 +79,18 @@ export default function AdminProductos() {
                   <td className="text-end">
                     <div className="btn-group">
                       <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => eliminarProducto(p.id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </button>
-                      <button
                         className="btn btn-sm btn-outline-secondary"
                         onClick={() => navigate(String(p.id))}
                       >
-                        <i className="fa-solid fa-pen"></i>
+                        <i className="fa-solid fa-pen me-1"></i>
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => eliminarProducto(p.id)}
+                      >
+                        <i className="fa-solid fa-trash me-1"></i>
+                        Eliminar
                       </button>
                     </div>
                   </td>

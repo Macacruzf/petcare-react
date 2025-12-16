@@ -13,14 +13,14 @@ export default function Productos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Actualizar categoría seleccionada cuando cambia el state de navegación
+  // Actualizar categoría seleccionada cuando cambia el state de navegación
   useEffect(() => {
     if (location.state?.categoriaInicial) {
       setCategoriaSeleccionada(location.state.categoriaInicial);
     }
   }, [location.state]);
 
-  // 🔹 Cargar productos desde el microservicio
+  // Cargar productos desde el microservicio
   useEffect(() => {
     const cargarProductos = async () => {
       try {
@@ -38,10 +38,10 @@ export default function Productos() {
     cargarProductos();
   }, []);
 
-  // 🔹 Extraer categorías únicas
+  // Extraer categorías únicas
   const categorias = ["Todos", ...new Set(productos.map((p) => p.categoria?.nombre).filter(Boolean))];
 
-  // 🔹 Filtrar productos por categoría
+  // Filtrar productos por categoría
   const productosFiltrados =
     categoriaSeleccionada === "Todos"
       ? productos

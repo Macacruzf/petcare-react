@@ -55,7 +55,11 @@ export default function Navbar() {
             <li className="nav-item"><NavLink className="nav-link" to="/ofertas">Ofertas</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/blog">Blog</NavLink></li>
             <li className="nav-item"><NavLink className="nav-link" to="/nosotros">Nosotros</NavLink></li>
-            <li className="nav-item"><NavLink className="nav-link" to="/contacto">Contacto</NavLink></li>
+            
+            {/* Contacto - Solo visible para clientes */}
+            {!isAdmin && (
+              <li className="nav-item"><NavLink className="nav-link" to="/contacto">Contacto</NavLink></li>
+            )}
 
             {/*  Panel admin visible solo para rol admin */}
             {isAdmin && (
@@ -79,7 +83,7 @@ export default function Navbar() {
                 
                 {/* Ver Perfil - Solo visible para clientes */}
                 {!isAdmin && (
-                  <NavLink className="btn btn-outline-light" to="/perfil">
+                  <NavLink className="btn btn-light" to="/perfil">
                     <i className="fa-solid fa-user me-1"></i> Ver Perfil
                   </NavLink>
                 )}

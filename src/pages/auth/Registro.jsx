@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { registrarUsuario } from '../../services/usuarioService'
+import ojo from '../../assets/images/ojo.png'
 
 export default function Registro() {
   const [formData, setFormData] = useState({ 
@@ -8,6 +9,7 @@ export default function Registro() {
     apellido: '',
     email: '', 
     password: '',
+    confirmarPassword: '',
     direccion: '',
     telefono: ''
   })
@@ -15,6 +17,8 @@ export default function Registro() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [mostrarPassword, setMostrarPassword] = useState(false)
+  const [mostrarConfirmarPassword, setMostrarConfirmarPassword] = useState(false)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -31,6 +35,12 @@ export default function Registro() {
       return
     }
 
+    // Validar que las contraseñas coincidan
+    if (formData.password !== formData.confirmarPassword) {
+      setError('Las contraseñas no coinciden')
+      return
+    }
+
     setLoading(true)
     setError('')
 
@@ -39,6 +49,7 @@ export default function Registro() {
       await registrarUsuario({
         nombre: formData.nombre.trim(),
         apellido: formData.apellido.trim(),
+        username: formData.nombre.trim(), // Usar el email como username
         email: formData.email.trim(),
         password: formData.password.trim(),
         direccion: formData.direccion.trim(),
@@ -145,17 +156,51 @@ export default function Registro() {
 
         <div className="mb-3">
           <label className="form-label">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            minLength="6"
-          />
+          <div className="input-group">
+            <input
+              type={mostrarPassword ? "text" : "password"}
+              name="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              minLength="6"
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setMostrarPassword(!mostrarPassword)}
+            >
+              <img src={ojo} alt="Ver contraseña" style={{ width: '20px', height: '20px', opacity: mostrarPassword ? 0.5 : 1 }} />
+            </button>
+          </div>
           <div className="invalid-feedback">
             La contraseña debe tener al menos 6 caracteres.
+          </div>
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Confirmar Contraseña</label>
+          <div className="input-group">
+            <input
+              type={mostrarConfirmarPassword ? "text" : "password"}
+              name="confirmarPassword"
+              className="form-control"
+              value={formData.confirmarPassword}
+              onChange={handleChange}
+              required
+              minLength="6"
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setMostrarConfirmarPassword(!mostrarConfirmarPassword)}
+            >
+              <img src={ojo} alt="Ver contraseña" style={{ width: '20px', height: '20px', opacity: mostrarConfirmarPassword ? 0.5 : 1 }} />
+            </button>
+          </div>
+          <div className="invalid-feedback">
+            Confirma tu contraseña.
           </div>
         </div>
 

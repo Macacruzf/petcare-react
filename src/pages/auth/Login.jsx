@@ -4,15 +4,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { loginUsuario } from '../../services/usuarioService'
 import { useAuth } from '../../contexts/AuthContext'
 import logo from '../../assets/images/logo.png'
+import ojo from '../../assets/images/ojo.png'
 import { useForm } from '../../hooks'
 
 export default function Login() {
   const [validated, setValidated] = useState(false)
   const [loginError, setLoginError] = useState(null)
+  const [mostrarPassword, setMostrarPassword] = useState(false)
   const navigate = useNavigate()
   const { login } = useAuth()
 
-  // 🎣 Hook personalizado useForm
+  // Hook personalizado useForm
   const { values, errors, handleChange, handleSubmit, isSubmitting } = useForm(
     { correo: '', password: '' },
     async (formValues) => {
@@ -95,15 +97,24 @@ export default function Login() {
 
         <div className="mb-3">
           <label className="form-label fw-semibold">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={values.password}
-            onChange={handleChange}
-            required
-            minLength="4"
-          />
+          <div className="input-group">
+            <input
+              type={mostrarPassword ? "text" : "password"}
+              name="password"
+              className="form-control"
+              value={values.password}
+              onChange={handleChange}
+              required
+              minLength="4"
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setMostrarPassword(!mostrarPassword)}
+            >
+              <img src={ojo} alt="Ver contraseña" style={{ width: '20px', height: '20px', opacity: mostrarPassword ? 0.5 : 1 }} />
+            </button>
+          </div>
           <div className="invalid-feedback">
             La contraseña debe tener al menos 4 caracteres.
           </div>

@@ -30,7 +30,7 @@ export default function FormProducto() {
     { id: 4, nombre: 'Higiene' }
   ]
 
-  // 🔹 Cargar datos si es edición
+  // Cargar datos si es edición
   useEffect(() => {
     if (isEdit) {
       const cargarProducto = async () => {
@@ -56,7 +56,7 @@ export default function FormProducto() {
     }
   }, [id, isEdit])
 
-  // 🔹 Manejar cambios en los campos
+  // Manejar cambios en los campos
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setProducto({
@@ -65,7 +65,7 @@ export default function FormProducto() {
     })
   }
 
-  // 🔹 Guardar producto (crear o editar)
+  // Guardar producto (crear o editar)
   const onSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)

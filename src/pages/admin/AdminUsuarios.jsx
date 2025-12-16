@@ -8,7 +8,7 @@ export default function AdminUsuarios() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // 🔹 Cargar usuarios desde el microservicio
+  // Cargar usuarios desde el microservicio
   useEffect(() => {
     const cargarUsuarios = async () => {
       try {

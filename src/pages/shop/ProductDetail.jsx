@@ -14,10 +14,10 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // 🎣 Hook personalizado useToggle para mostrar descripción completa
+  // Hook personalizado useToggle para mostrar descripción completa
   const [showFullDescription, toggleDescription] = useToggle(false);
 
-  // 🔹 Cargar producto y productos relacionados desde el microservicio
+  // Cargar producto y productos relacionados desde el microservicio
   useEffect(() => {
     const cargarProducto = async () => {
       try {

@@ -36,11 +36,11 @@ export const loginUsuario = async (
     body: JSON.stringify(credentials),
   })
 
-  // 🔐 Guardar sesión
+  // Guardar sesión
   localStorage.setItem('userId', response.userId.toString())
   localStorage.setItem('userRole', response.rol)
   localStorage.setItem('userName', response.nombre)
-  localStorage.setItem('token', response.token) // ✅ JWT
+  localStorage.setItem('token', response.token) // JWT
 
   return response
 }
