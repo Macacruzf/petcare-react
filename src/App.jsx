@@ -37,7 +37,7 @@ export default function App() {
 
       <main className="flex-fill py-4">
         <Routes>
-          {/* 🏠 Rutas públicas */}
+          {/*  Rutas públicas */}
           <Route path="/" element={<Home />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
@@ -45,7 +45,7 @@ export default function App() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/perfil" element={<Perfil />} />
 
-          {/* 🛍️ Rutas de e-commerce */}
+          {/*  Rutas de e-commerce */}
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/:id" element={<ProductDetail />} />
           <Route path="/carrito" element={<Carrito />} />
@@ -54,12 +54,12 @@ export default function App() {
           <Route path="/ofertas" element={<Ofertas />} />
           <Route path="/mis-pedidos" element={<MisPedidos />} />
 
-          {/* 📰 Blog */}
+          {/*  Blog */}
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/comiendo" element={<BlogComida />} />
           <Route path="/blog/vacunas" element={<BlogVacuna />} />
 
-          {/* 🔐 Administración protegida */}
+          {/*  Administración protegida */}
           <Route path="/admin/*" element={<AdminRoutes />} />
         </Routes>
       </main>
