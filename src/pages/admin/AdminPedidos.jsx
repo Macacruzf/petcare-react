@@ -130,16 +130,10 @@ const AdminPedidos = () => {
             Pendientes ({pedidos.filter(p => p.estado === 'PENDIENTE').length})
           </button>
           <button
-            className={`btn ${filtroEstado === 'CONFIRMADO' ? 'btn-info' : 'btn-outline-info'}`}
-            onClick={() => setFiltroEstado('CONFIRMADO')}
+            className={`btn ${filtroEstado === 'POR_ENTREGAR' ? 'btn-primary' : 'btn-outline-primary'}`}
+            onClick={() => setFiltroEstado('POR_ENTREGAR')}
           >
-            Confirmados ({pedidos.filter(p => p.estado === 'CONFIRMADO').length})
-          </button>
-          <button
-            className={`btn ${filtroEstado === 'ENVIADO' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setFiltroEstado('ENVIADO')}
-          >
-            Enviados ({pedidos.filter(p => p.estado === 'ENVIADO').length})
+            Por Entregar ({pedidos.filter(p => p.estado === 'POR_ENTREGAR').length})
           </button>
           <button
             className={`btn ${filtroEstado === 'ENTREGADO' ? 'btn-success' : 'btn-outline-success'}`}
@@ -209,8 +203,7 @@ const AdminPedidos = () => {
                         disabled={updatingPedidoId === pedido.id}
                       >
                         <option value="PENDIENTE">PENDIENTE</option>
-                        <option value="CONFIRMADO">CONFIRMADO</option>
-                        <option value="ENVIADO">ENVIADO</option>
+                        <option value="POR_ENTREGAR">POR ENTREGAR</option>
                         <option value="ENTREGADO">ENTREGADO</option>
                         <option value="CANCELADO">CANCELADO</option>
                       </select>

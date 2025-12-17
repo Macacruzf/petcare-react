@@ -1,7 +1,7 @@
 // src/pages/admin/AdminProductos.jsx
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { obtenerTodosProductos } from '../../services/productosService'
+import { obtenerTodosProductos, eliminarProducto } from '../../services/productosService'
 
 export default function AdminProductos() {
   const navigate = useNavigate()
@@ -28,10 +28,17 @@ export default function AdminProductos() {
   }, [])
 
   // Eliminar producto
-  const eliminarProducto = (id) => {
-    if (confirm('¿Deseas eliminar este producto?')) {
-      // TODO: Implementar eliminación con microservicio
-      alert('Funcionalidad de eliminación pendiente de implementar')
+  const handleEliminarProducto = async (id) => {
+    if (confirm('¿Estás seguro de eliminar este producto? Esta acción no se puede deshacer.')) {
+      try {
+        await eliminarProducto(id)
+        // Actualizar la lista de productos
+        setProductos(productos.filter(p => p.id !== id))
+        alert('Producto eliminado exitosamente')
+      } catch (err) {
+        console.error('Error al eliminar producto:', err)
+        alert('Error al eliminar el producto: ' + err.message)
+      }
     }
   }
 
@@ -87,7 +94,7 @@ export default function AdminProductos() {
                       </button>
                       <button
                         className="btn btn-sm btn-outline-danger"
-                        onClick={() => eliminarProducto(p.id)}
+                        onClick={() => handleEliminarProducto(p.id)}
                       >
                         <i className="fa-solid fa-trash me-1"></i>
                         Eliminar

@@ -2,6 +2,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useCart } from '../../contexts/CartContext.jsx'
 import { useAuth } from '../../contexts/AuthContext'
+import { useNotificaciones } from '../../hooks/useNotificaciones'
 import logo from '../../assets/images/logo.png'
 
 export default function Navbar() {
@@ -11,6 +12,9 @@ export default function Navbar() {
   // Obtener usuario y funciones del contexto de autenticación
   const { usuario, logout, esAdministrador } = useAuth()
   const isAdmin = esAdministrador()
+  
+  // Hook de notificaciones (siempre se llama, pero solo se usa para admin)
+  const { contadorNoLeidas } = useNotificaciones()
 
   //  Cerrar sesión
   const handleLogout = () => {
@@ -92,6 +96,19 @@ export default function Navbar() {
                 {!isAdmin && (
                   <NavLink className="btn btn-outline-light" to="/mis-pedidos">
                     <i className="fa-solid fa-box me-1"></i> Mis Pedidos
+                  </NavLink>
+                )}
+                
+                {/* Notificaciones - Solo visible para administradores */}
+                {isAdmin && (
+                  <NavLink className="btn btn-outline-light position-relative" to="/admin/notificaciones">
+                    <i className="fa-solid fa-bell me-1"></i>
+                    Notificaciones
+                    {contadorNoLeidas > 0 && (
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {contadorNoLeidas}
+                      </span>
+                    )}
                   </NavLink>
                 )}
                 
